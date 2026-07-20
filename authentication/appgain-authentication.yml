@@ -1,0 +1,25 @@
+generated: '2026-07-18'
+method: searched
+source: https://documenter.getpostman.com/view/4679101/T17KeScV + https://docs.appgain.io/overview/AppBoostIntegration/
+docs: https://docs.appgain.io/complete-knowledge-base/
+summary:
+  types: [apiKey]
+  api_key_in: [header]
+  oauth2_flows: []
+  notes: Appgain's REST API uses a per-application API key sent in an HTTP header, with
+    the tenant/project scoped by a projectId in the request path. There is no OAuth2 or
+    OIDC flow on the messaging API; the API key and project ID are issued from the
+    dashboard under Project Settings -> API and SDK Keys.
+schemes:
+- name: appApiKey
+  type: apiKey
+  in: header
+  parameter_name: appApiKey
+  description: Application API key issued per project. Passed as the `appApiKey` request
+    header on every REST call (verified across the public Postman collection).
+  sources: [postman/T17KeScV]
+path_scoping:
+  parameter: projectId
+  location: path
+  example: https://api.appgain.io/apps/{projectId}/smartlinks
+credentials_source: Project Settings -> API and SDK Keys (Appgain dashboard)
