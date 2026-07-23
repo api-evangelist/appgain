@@ -1,0 +1,44 @@
+generated: '2026-07-18'
+method: searched
+source: https://headwayapp.co/appgain-changelog
+scheme:
+  type: labeled-release-notes
+  labels: [New, Improvement, Fix]
+  current: Product V14
+entries:
+- title: Appgain WhatsApp Lite - Release Notes
+  highlights: Expanded daily send limit to 300 messages, rich media support, and
+    AI-ready webhook integrations.
+  labels: [New, Improvement]
+- title: Appgain WhatsApp Business - New Vendor Integration
+  highlights: Route Mobile integration with Green Tick (OBA) verification for brand
+    credibility.
+  labels: [New]
+- title: Customer Data Platform (CDP) Launch
+  highlights: Real-time event tracking, enhanced user profiles, and AI-powered
+    marketing automation.
+  labels: [New]
+- title: Product V14 Release Notes
+  version: V14
+  highlights: Retail Gain / Soft POS updates, web push customization, deep links, and
+    email dynamic content.
+  labels: [New, Improvement]
+- title: Product V13 Release Notes
+  version: V13
+  highlights: Dashboard improvements replacing Freshchat with WhatsApp; beta loyalty
+    product launch.
+  labels: [Improvement, New]
+- title: Product V12 Release Notes
+  version: V12
+  highlights: Google Authentication, Shopify/Zid/Salla synchronization, and payment
+    gateway support.
+  labels: [New]
+- title: Product V11 Release Notes
+  version: V11
+  highlights: UI redesign, segment syncing with Facebook, notification logs, and
+    drag-and-drop page builder.
+  labels: [Improvement, New]
+- title: Product V8 Release Notes
+  version: V8
+  highlights: First Shopify app launch and Flutter SDK release.
+  labels: [New]

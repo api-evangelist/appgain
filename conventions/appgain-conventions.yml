@@ -1,0 +1,50 @@
+generated: '2026-07-18'
+method: searched
+source: https://documenter.getpostman.com/view/4679101/T17KeScV + https://docs.appgain.io/
+docs: https://docs.appgain.io/complete-knowledge-base/
+authentication:
+  style: apiKey
+  header: appApiKey
+  ref: authentication/appgain-authentication.yml
+hosts:
+  description: The messaging platform is split across several product hosts; requests
+    are tenant-scoped by a projectId path segment. A per-account subdomain is used for
+    some smart-link/campaign operations.
+  api: https://api.appgain.io
+  notify: https://notify.appgain.io
+  automator: https://automator.appgain.io
+  tenant_pattern: https://{account_subdomain}.appgain.io
+url_structure:
+  pattern: /apps/{projectId}/{resource}
+  examples:
+  - POST /apps/{projectId}/smartlinks
+  - POST /apps/{projectId}/media/photo
+  - POST /apps/{projectId}/events/logEvent
+content_type:
+  request: application/json
+  bulk_uploads: multipart/form-data
+  accept: application/json
+idempotency:
+  supported: false
+  notes: No documented idempotency-key header on the Appgain REST API as of this pass.
+pagination:
+  supported: unknown
+  notes: Not documented in the public API reference / Postman collection; most endpoints
+    are action/send-oriented rather than large collection reads.
+versioning:
+  scheme: product-release
+  notes: The platform is versioned by product release (e.g. Product V11-V14) rather
+    than by an API version path segment; see changelog/appgain-changelog.yml.
+error_envelope:
+  format: json
+  notes: Errors returned as JSON with standard HTTP status codes; no RFC 9457
+    problem+json usage documented.
+webhooks:
+  supported: partial
+  notes: Automation journeys can "fire automessage" and the WhatsApp Lite release notes
+    document AI-ready webhook integrations; there is no published AsyncAPI or webhook
+    event catalog.
+rate_limiting:
+  signaled: unknown
+  notes: No documented rate-limit headers. WhatsApp Lite documents a per-day send cap
+    (300 messages) as a plan quota rather than an API rate limit.

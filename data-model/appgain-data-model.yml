@@ -1,0 +1,75 @@
+generated: '2026-07-18'
+method: derived
+source: postman/T17KeScV (public Postman collection resource groups) + https://docs.appgain.io/
+note: Derived from the Appgain OmniChannel Messaging API resource groups (no OpenAPI
+  published). All resources are scoped under a project/app via the /apps/{projectId}/ path.
+root_scope:
+  entity: App
+  identifier: projectId
+  via: path
+entities:
+- name: App
+  description: A project/tenant. Owns all messaging, media, and user data; identified
+    by projectId and authenticated with an appApiKey.
+- name: SmartLink
+  description: Smart deep link with platform targets (android/ios/web), launch page,
+    and pixel-tracking flags. Created singly or via bulk CSV upload.
+- name: PushNotification
+  description: Rich app-push message (text, image, gif, video, YouTube webview, HTML
+    webview, silent) delivered to app users.
+- name: EmailMessage
+  description: Email campaign sent to a single user, specific users, or all users.
+- name: SMSMessage
+  description: SMS campaign sent to specific user IDs, all users, a target list, or
+    specific numbers; includes subscribe/unsubscribe management.
+- name: WebPush
+  description: Web push notification to browser subscribers.
+- name: AutoMessage
+  description: Automation-journey message that can be fired or cancelled server-side.
+- name: MediaFile
+  description: Photo or video asset in the project media library.
+- name: User
+  description: An end user/profile in the CDP; carries logged events and purchases.
+- name: Event
+  description: A logged user event (logEvent) or purchase (logPurchase) feeding the CDP.
+relationships:
+- from: SmartLink
+  to: App
+  type: belongs_to
+  via: projectId
+- from: PushNotification
+  to: App
+  type: belongs_to
+  via: projectId
+- from: EmailMessage
+  to: App
+  type: belongs_to
+  via: projectId
+- from: SMSMessage
+  to: App
+  type: belongs_to
+  via: projectId
+- from: WebPush
+  to: App
+  type: belongs_to
+  via: projectId
+- from: AutoMessage
+  to: App
+  type: belongs_to
+  via: projectId
+- from: MediaFile
+  to: App
+  type: belongs_to
+  via: projectId
+- from: App
+  to: User
+  type: has_many
+  via: projectId
+- from: User
+  to: Event
+  type: has_many
+  via: userId
+- from: Event
+  to: User
+  type: belongs_to
+  via: userId

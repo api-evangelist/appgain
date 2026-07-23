@@ -1,0 +1,58 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.appgain.io/SDK/gettingStarted/ + registry verification (pub.dev, cocoapods.org, registry.npmjs.org, github.com/appgain)
+packages:
+- language: dart
+  platform: flutter
+  registry: pub.dev
+  name: appgain_sdk
+  version: 0.0.10
+  url: https://pub.dev/packages/appgain_sdk
+  install: "appgain_sdk: ^0.0.10"
+  official: true
+  verified: '2026-07-18'
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: Appgain
+  url: https://cocoapods.org/pods/Appgain
+  install: "pod 'Appgain'"
+  source_code: https://github.com/appgain/appgain-SDK-iOs
+  official: true
+  verified: '2026-07-18'
+- language: java
+  platform: android
+  registry: gradle
+  name: io.appgain.sdk:appgain-android
+  version: 5.0.0
+  url: https://docs.appgain.io/SDK/gettingStarted/
+  install: "implementation 'io.appgain.sdk:appgain-android:5.0.0'"
+  official: true
+  note: Published gradle coordinate from Appgain docs; not present on Maven Central search (distributed via provider/JitPack repo).
+  verified: '2026-07-18'
+- language: javascript
+  platform: react-native
+  registry: npm
+  name: react-native-appgain-sdk
+  url: https://www.npmjs.com/package/react-native-appgain-sdk
+  install: npm install react-native-appgain-sdk
+  source_code: https://github.com/appgain/react-native-appgain-sdk
+  official: true
+  verified: '2026-07-18'
+- language: javascript
+  platform: cordova-ionic
+  registry: github
+  name: Cordova-SDK
+  url: https://github.com/appgain/Cordova-SDK
+  source_code: https://github.com/appgain/Cordova-SDK
+  official: true
+  note: Cordova/PhoneGap/Ionic plugin distributed via the Appgain GitHub org (see also IonicAppgainNGX).
+  verified: '2026-07-18'
+- language: javascript
+  platform: web
+  registry: docs
+  name: Appgain Web SDK
+  url: https://docs.appgain.io/SDK/gettingStarted/
+  official: true
+  note: Browser/web JS SDK documented in the Appgain SDK guide (script include); no public registry package.
+  verified: '2026-07-18'

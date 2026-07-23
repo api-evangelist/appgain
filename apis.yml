@@ -1,7 +1,14 @@
 aid: appgain
 name: Appgain
-description: Appgain is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: Appgain is an omnichannel messaging and mobile marketing automation platform,
+  originally out of the MENA region, that lets marketers acquire, engage, and retain
+  mobile and web users across push notifications, in-app messaging, email, SMS, WhatsApp,
+  and web push from a single cloud. Its REST API and mobile SDKs power smart deep links,
+  micro landing pages, behavior-triggered automation journeys, a customer data platform
+  (CDP) with real-time event logging and purchase tracking, and multi-channel campaign
+  delivery, with marketplace apps for Shopify, Zid, and Salla and no-code integrations
+  via Zapier and n8n. The backend is built on the open-source Parse Server stack, and
+  first-party SDKs cover Android, iOS, Flutter, React Native, Cordova/Ionic, and web.
 url: https://raw.githubusercontent.com/api-evangelist/appgain/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,12 +16,58 @@ x-backed-by:
 - 500-global
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- Mobile Marketing
+- Marketing Automation
+- Omnichannel Messaging
+- Push Notifications
+- SMS
+- Email
+- WhatsApp
+- Customer Data Platform
+- Deep Linking
+- Customer Engagement
+image: https://appgain.io/og-image-blog.jpg
+apis:
+- name: Appgain OmniChannel Messaging API
+  description: REST API for sending multi-channel campaigns (rich push notifications,
+    email, SMS, web push), creating smart deep links, managing a media library, and
+    logging user events/purchases into the Appgain CDP. Authentication is via an
+    application API key (appApiKey header) scoped to a project ID.
+  humanURL: https://apidocs.appgain.io
+  baseURL: https://api.appgain.io
+  tags:
+  - Messaging
+  - Push Notifications
+  - Deep Linking
+  - Event Logging
+  properties:
+  - type: APIReference
+    url: https://apidocs.appgain.io
+  - type: Postman
+    url: https://documenter.getpostman.com/view/4679101/T17KeScV?version=latest
+  - type: Authentication
+    url: authentication/appgain-authentication.yml
+  - type: Conventions
+    url: conventions/appgain-conventions.yml
+  - type: DataModel
+    url: data-model/appgain-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +76,49 @@ maintainers:
 common:
 - type: Website
   url: https://appgain.io
+- type: DeveloperPortal
+  url: https://docs.appgain.io
+- type: Documentation
+  url: https://docs.appgain.io/complete-knowledge-base/
+- type: APIReference
+  url: https://apidocs.appgain.io
+- type: GettingStarted
+  url: https://docs.appgain.io/SDK/gettingStarted/
+- type: Postman
+  url: https://documenter.getpostman.com/view/4679101/T17KeScV?version=latest
+- type: ChangeLog
+  url: https://headwayapp.co/appgain-changelog
+- type: Blog
+  url: https://www.appgain.io/blog
+- type: Pricing
+  url: https://www.appgain.io/pricing
+- type: SignUp
+  url: https://dashboard.appgain.io
+- type: TermsOfService
+  url: https://www.appgain.io/terms
+- type: PrivacyPolicy
+  url: https://www.appgain.io/privacy
+- type: Support
+  url: https://p.appgain.io/slack
+- type: GitHubOrganization
+  url: https://github.com/appgain
+- type: Packages
+  url: packages/appgain-packages.yml
+- type: SDKs
+  url: packages/appgain-packages.yml
+- type: Authentication
+  url: authentication/appgain-authentication.yml
+- type: Conventions
+  url: conventions/appgain-conventions.yml
+- type: ChangeLog
+  url: changelog/appgain-changelog.yml
+  name: Appgain Changelog (structured)
+- type: DataModel
+  url: data-model/appgain-data-model.yml
+- type: DomainSecurity
+  url: security/appgain-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
