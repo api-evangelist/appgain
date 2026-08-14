@@ -9,6 +9,12 @@ description: Appgain is an omnichannel messaging and mobile marketing automation
   delivery, with marketplace apps for Shopify, Zid, and Salla and no-code integrations
   via Zapier and n8n. The backend is built on the open-source Parse Server stack, and
   first-party SDKs cover Android, iOS, Flutter, React Native, Cordova/Ionic, and web.
+  Since 2026 the company positions itself as an "AI Workforce Platform" for MENA
+  businesses, adding AI agent products - a RAG-powered customer bot, AI call
+  intelligence with Arabic and English transcription, a visual bot builder, and a
+  unified inbox - on top of the messaging core. The only machine-readable contract
+  Appgain publishes is a public Postman collection served from its own apidocs
+  subdomain; there is no OpenAPI.
 url: https://raw.githubusercontent.com/api-evangelist/appgain/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -17,20 +23,29 @@ x-backed-by:
 x-tier: stub
 x-tier-reason: portfolio-lead
 accessModel:
-  pricing: unknown
+  pricing: contact-sales
   onboarding: self-serve
-  trial: false
-  try_now: false
+  trial: true
+  trial_days: 14
+  credit_card_required: false
+  free_tier: true
+  try_now: true
+  try_now_note: https://appgain.io/free-tools - Push Notification Lab (APNS/FCM testers,
+    no account required)
   public: false
-  label: Self-serve signup
-  confidence: medium
+  public_note: API keys are issued per project from the dashboard; no test/live key
+    separation and no sandbox host
+  label: Self-serve signup with a 14-day free trial; pricing quoted by sales
+  confidence: high
   source:
-  - authentication
-  generated: '2026-07-22'
-  method: derived
+  - plans/appgain-plans-pricing.yml
+  - sandbox/appgain-sandbox.yml
+  - authentication/appgain-authentication.yml
+  generated: '2026-08-13'
+  method: searched
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-08-13'
 tags:
 - Company
 - Mobile Marketing
@@ -43,6 +58,9 @@ tags:
 - Customer Data Platform
 - Deep Linking
 - Customer Engagement
+- AI Agents
+- Conversational AI
+- MENA
 image: https://appgain.io/og-image-blog.jpg
 apis:
 - name: Appgain OmniChannel Messaging API
@@ -62,12 +80,62 @@ apis:
     url: https://apidocs.appgain.io
   - type: Postman
     url: https://documenter.getpostman.com/view/4679101/T17KeScV?version=latest
+  - type: PostmanCollection
+    url: postman/appgain-omnichannel.postman_collection.json
+    name: Appgain.io public Postman collection (verbatim, 30 requests)
   - type: Authentication
     url: authentication/appgain-authentication.yml
   - type: Conventions
     url: conventions/appgain-conventions.yml
   - type: DataModel
     url: data-model/appgain-data-model.yml
+  - type: ErrorCatalog
+    url: errors/appgain-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/appgain-rate-limits.yml
+- name: Appgain Notify API
+  description: The messaging send service. A single POST /{projectId}/send endpoint
+    whose channel is selected by the top-level body key (appPush, email, SMS, webPush,
+    WHATSAPP, UOWHATSAPP), plus SMS target-list subscribe/unsubscribe and WhatsApp
+    template creation. Authenticated with the project appApiKey header.
+  humanURL: https://apidocs.appgain.io
+  baseURL: https://notify.appgain.io
+  tags:
+  - Messaging
+  - Push Notifications
+  - SMS
+  - Email
+  - WhatsApp
+  properties:
+  - type: APIReference
+    url: https://apidocs.appgain.io
+  - type: PostmanCollection
+    url: postman/appgain-omnichannel.postman_collection.json
+  - type: Authentication
+    url: authentication/appgain-authentication.yml
+  - type: Conventions
+    url: conventions/appgain-conventions.yml
+  - type: ErrorCatalog
+    url: errors/appgain-problem-types.yml
+- name: Appgain Automator API
+  description: The marketing-automation service. Fires and cancels dashboard-configured
+    automation journeys at a named trigger point, for one user or a batch of users via
+    the v2 form. Authenticated with the project appApiKey header.
+  humanURL: https://docs.appgain.io/Marketing%20Automation/ServerSideAutomation/
+  baseURL: https://automator.appgain.io
+  tags:
+  - Marketing Automation
+  - Customer Journeys
+  - Event Triggers
+  properties:
+  - type: Documentation
+    url: https://docs.appgain.io/Marketing%20Automation/ServerSideAutomation/
+  - type: PostmanCollection
+    url: postman/appgain-omnichannel.postman_collection.json
+  - type: Authentication
+    url: authentication/appgain-authentication.yml
+  - type: ErrorCatalog
+    url: errors/appgain-problem-types.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -95,7 +163,7 @@ common:
 - type: SignUp
   url: https://dashboard.appgain.io
 - type: TermsOfService
-  url: https://www.appgain.io/terms
+  url: https://appgain.io/tos
 - type: PrivacyPolicy
   url: https://www.appgain.io/privacy
 - type: Support
@@ -117,8 +185,87 @@ common:
   url: data-model/appgain-data-model.yml
 - type: DomainSecurity
   url: security/appgain-domain-security.yml
+- type: LLMsTxt
+  url: llms/appgain-llms.txt
+  name: Appgain llms.txt (verbatim from https://www.appgain.io/llms.txt, HTTP 200)
+- type: PostmanCollection
+  url: postman/appgain-omnichannel.postman_collection.json
+  name: Appgain.io public Postman collection (verbatim, 30 requests)
+- type: ErrorCatalog
+  url: errors/appgain-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/appgain-lifecycle.yml
+- type: Conformance
+  url: conformance/appgain-conformance.yml
+- type: Sandbox
+  url: sandbox/appgain-sandbox.yml
+  name: Push Notification Lab + free-project testing posture
+- type: Plans
+  url: plans/appgain-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/appgain-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/appgain-webhooks.yml
+  name: WhatsApp Lite outbound delivery and user-reply webhooks
+- type: Components
+  url: components/appgain-components.yml
+- type: AgentSkill
+  url: skills/_index.yml
+  name: Appgain agent skills (4)
+- type: WellKnownProbe
+  url: well-known/appgain-well-known.yml
+  name: '/.well-known probe record - no document served on any host (recorded absence,
+    not a WellKnown pointer)'
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 17
+  artifacts_updated: 6
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+  headline: >-
+    Contract discovery found the machine-readable contract the previous pass missed -
+    a real public Postman Collection v2 (30 requests, 4 hosts) served from Appgain's
+    own apidocs.appgain.io - plus a genuine llms.txt at www.appgain.io/llms.txt. There
+    is still no OpenAPI on any host.
+x-pointers-deliberately-withheld:
+  note: >-
+    Artifacts exist on disk for these, but no canonical scored pointer is emitted
+    because the underlying thing is genuinely absent. Recorded so a later pass does
+    not "fix" it by adding the pointer.
+  withheld:
+  - {type: WellKnown, reason: 'no /.well-known document on any of six hosts; www.appgain.io
+      returns HTTP 200 for every /.well-known path but the body is the identical SPA
+      shell, so those 200s are a catch-all, not documents', artifact: well-known/appgain-well-known.yml}
+  - {type: SecurityTxt, reason: no security.txt served, artifact: well-known/appgain-well-known.yml}
+  - {type: AgentCard, reason: 'no A2A agent card at /.well-known/agent-card.json or
+      /.well-known/agent.json on any host; search-only artifact, never authored',
+    artifact: none}
+  - {type: MCPServer, reason: 'Appgain ships no MCP server, hosted or installable.
+      mcp/appgain-mcp.yml is a DERIVED candidate tool list with deployment.mode = none;
+      pointing MCPServer at it would credit an agent surface that does not exist',
+    artifact: mcp/appgain-mcp.yml}
+  - {type: StatusPage, reason: 'Appgain''s own n8n guide directs integrators to
+      status.appgain.io, but that hostname has no DNS record - a documented status page
+      that does not exist is an absence', artifact: lifecycle/appgain-lifecycle.yml}
+  - {type: Deprecation, reason: no deprecation policy, no Sunset/Deprecation header support,
+      artifact: lifecycle/appgain-lifecycle.yml}
+  - {type: Idempotency, reason: 'no idempotency key, header or parameter anywhere in the
+      published contract or docs; retrying a send re-sends the campaign',
+    artifact: conventions/appgain-conventions.yml}
+  - {type: Security, reason: 'no security.txt, no responsible-disclosure page, no bug
+      bounty; probe-security-programs.py returned vdp=none', artifact: none}
+  - {type: TrustCenter, reason: 'no trust centre on trust.appgain.io (no DNS),
+      security.appgain.io, or /trust|/security|/compliance; probe returned trust=none',
+    artifact: none}
+  - {type: Compliance, reason: 'no named third-party certification published (no SOC 2,
+      ISO 27001, PCI DSS, HIPAA, FedRAMP); only marketing compliance language and a
+      standard GDPR privacy policy', artifact: conformance/appgain-conformance.yml}
+  - {type: AsyncAPI, reason: 'no AsyncAPI document; the webhook surface is advertised in
+      release notes with no event schema, so only Webhooks is emitted',
+    artifact: asyncapi/appgain-webhooks.yml}
+  - {type: OAuthScopes, reason: API-key auth only - no OAuth2 flow, token endpoint or scope surface,
+    artifact: none}
+  - {type: OpenAPI, reason: 'no OpenAPI/Swagger on any host after probing /openapi.json,
+      /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /swagger/v1/swagger.json
+      across six hosts; the published machine-readable contract is a Postman collection',
+    artifact: postman/appgain-omnichannel.postman_collection.json}
