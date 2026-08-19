@@ -1,0 +1,45 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  postman/appgain-omnichannel.postman_collection.json (Appgain's verbatim public
+  Postman collection 4679101/T17KeScV) + docs.appgain.io. Appgain publishes no
+  OpenAPI, so every skill grounds its steps in a request that exists verbatim in that
+  collection or in Appgain's own published integration guide — identified by request
+  name, HTTP method and exact URL rather than by operationId. No operation has been
+  invented.
+skills:
+- file: appgain-send-omnichannel-campaign.md
+  name: Send an Appgain omnichannel campaign
+  api: postman/appgain-omnichannel.postman_collection.json
+  operations:
+  - POST https://notify.appgain.io/{projectId}/send
+  - POST https://notify.appgain.io/{projectId}/create_whatsapp_template
+  channels: [appPush, email, SMS, webPush, WHATSAPP, UOWHATSAPP]
+- file: appgain-smart-deep-link-attribution.md
+  name: Create an Appgain smart deep link and read its attribution
+  api: postman/appgain-omnichannel.postman_collection.json
+  operations:
+  - POST https://{account_subdomain}.appgain.io/apps/{projectId}/smartlinks
+  - POST https://{account_subdomain}.appgain.io/apps/{projectId}/smartlinksbulk
+  - POST https://{account_subdomain}.appgain.io/{projectId}/upload
+  - GET https://{account_subdomain}.appgain.io/{projectId}/upload
+  - GET https://api.appgain.io/user_log_event/{projectId}/{userId}
+- file: appgain-fire-automation-journey.md
+  name: Fire and cancel an Appgain automation journey
+  api: postman/appgain-omnichannel.postman_collection.json
+  operations:
+  - GET https://automator.appgain.io/automessages/{projectId}/firevent/{triggerPointName}/{userId}
+  - DELETE https://automator.appgain.io/automessages/{projectId}/firevent/{triggerPointName}/{userId}
+  - POST https://automator.appgain.io/automessages/{projectId}/firevent/v2/{triggerPointName}
+- file: appgain-log-cdp-events.md
+  name: Log events and purchases into the Appgain CDP
+  api: postman/appgain-omnichannel.postman_collection.json
+  operations:
+  - POST https://{account_subdomain}.appgain.io/user_log_event/{projectId}/{userId}
+  - GET https://api.appgain.io/user_log_event/{projectId}/{userId}
+  - POST {Appbackend ServerURL}/functions/logPurchase
+  - POST {Appbackend ServerURL}/functions/getUserInfo
+safety_notes:
+- Appgain has no test mode and no sandbox host — every send in these skills delivers a real message.
+- There is no idempotency key anywhere in the API; no skill may auto-retry a send or a write.
+- Two operations require the Parse MASTER key, an unrestricted admin credential; they are flagged in the CDP skill.

@@ -1,0 +1,90 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://appgain.io/free-tools ("Push Notification Lab") +
+  https://docs.appgain.io/mobileattribution/HowToTest/ +
+  https://docs.appgain.io/HowTo/generate-an-ios-push-certificate/ +
+  https://docs.appgain.io/Omni-channels/WhatsApp%20Lite/gettingStarted/
+note: >-
+  Appgain has NO test/live key separation. There is no test-mode API key, no sandbox
+  base URL, no test-mode prefix on the appApiKey, and no fixture or trigger tooling.
+  Every REST call in the published contract goes to production and, on the send
+  endpoints, actually delivers a message to a real device or phone number. What
+  Appgain does publish is a browser-based push credential tester and a
+  free-project tier, both recorded below. Nothing here is invented; no test values
+  are fabricated because Appgain publishes none.
+test_live_separation:
+  supported: false
+  key_prefixes: none
+  test_mode: none
+  separate_base_url: false
+  guidance: >-
+    The documented practice for safe testing is to create a SEPARATE Appgain project
+    (each project has its own projectId and appApiKey) and point non-production
+    traffic at it. Appgain does not document this as a sandbox, but it is the only
+    isolation the platform provides.
+consoles:
+- name: Push Notification Lab
+  url: https://appgain.io/free-tools
+  type: hosted-tester
+  auth_required: false
+  description: >-
+    Free browser tool that sends a live test push using YOUR OWN credentials, so a
+    developer can validate Apple and Firebase setup before wiring a campaign.
+  tools:
+  - name: APNS Push Tester
+    inputs: [APNS .p12 or .pem certificate file, bundle id, device tokens (comma separated), message body,
+      'production toggle — "Send to production (leave unchecked for sandbox)"']
+    note: >-
+      The only true sandbox switch anywhere in Appgain's surface, and it is Apple's
+      APNS sandbox gateway, not an Appgain one.
+  - name: FCM Push Tester
+    inputs: [FCM server key, device tokens (comma separated), message body]
+  caution: >-
+    This tool takes a push CERTIFICATE upload and an FCM server key in a public,
+    unauthenticated web form. Those are production credentials for the customer's own
+    app.
+- name: Appgain dashboard
+  url: https://dashboard.appgain.io
+  type: product-console
+  auth_required: true
+  note: Campaign composer, template builder and analytics; where projectId and appApiKey are issued.
+free_tier:
+  exists: true
+  name: Free project
+  source: https://appgain.io/faqs
+  terms:
+  - Subscription scope is per PROJECT, not per user account.
+  - '14-day free trial, "no credit card required, cancel anytime" (homepage CTA).'
+  - Free projects are deleted if never used (stated in the FAQ).
+test_identifiers:
+  published: false
+  note: >-
+    No magic test phone numbers, no test email addresses, no test card numbers, no
+    test device tokens and no test user ids are published. The user ids, project ids,
+    campaign ids, phone numbers and image URLs that appear in Appgain's Postman
+    collection and n8n guide are real values from real accounts left in the examples,
+    not designated test fixtures, and must not be treated as safe to call.
+time_simulation:
+  test_clocks: false
+  note: >-
+    Automation journeys use real grace periods measured in hours (1h, 24h). There is
+    no way to fast-forward a journey for testing, so verifying a multi-step journey
+    requires waiting out the real delay.
+channel_testing:
+  smart_deep_link:
+    url: https://docs.appgain.io/mobileattribution/HowToTest/
+    note: Documented manual procedure for verifying deferred deep-link attribution end to end on a device.
+  whatsapp_lite:
+    note: >-
+      Setup is a QR-code link to a real personal WhatsApp account; there is no test
+      channel. Appgain warns the number may be blocked by WhatsApp at any time with no
+      refund.
+  ios_push:
+    note: >-
+      Requires Sandbox AND Production push .p12 files without a password, uploaded to
+      the Appgain dashboard.
+gaps:
+- No test API key or test mode — an agent cannot call any Appgain send endpoint without delivering a real message.
+- No fixtures, triggers, or simulated delivery/failure events.
+- No idempotency key, so a mistaken test send cannot be safely retried or de-duplicated.

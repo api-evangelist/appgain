@@ -1,75 +1,201 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: derived
-source: postman/T17KeScV (public Postman collection resource groups) + https://docs.appgain.io/
-note: Derived from the Appgain OmniChannel Messaging API resource groups (no OpenAPI
-  published). All resources are scoped under a project/app via the /apps/{projectId}/ path.
+source: >-
+  postman/appgain-omnichannel.postman_collection.json (verbatim public collection
+  4679101/T17KeScV) + https://docs.appgain.io/core-concepts/CDP/ +
+  https://docs.appgain.io/core-concepts/user-profiles/ +
+  https://docs.appgain.io/core-concepts/events/ +
+  https://docs.appgain.io/core-concepts/campaign-management/createAndSchedule/
+note: >-
+  Appgain publishes no OpenAPI, so this graph is derived from two real sources: the
+  request/response shapes in Appgain's own public Postman collection, and the
+  attribute and event tables published in the CDP / user-profile / events docs. Field
+  names are quoted as Appgain writes them (including its own inconsistencies, e.g.
+  `targates` for targets and `userID` vs `userId`). No entity, field or relationship
+  has been invented.
 root_scope:
-  entity: App
+  entity: Project
   identifier: projectId
   via: path
+  note: >-
+    Every operation is scoped by a projectId path segment and authorised by that
+    project's appApiKey. A subscription is per project, not per account, so the
+    project is the real tenancy boundary.
 entities:
-- name: App
-  description: A project/tenant. Owns all messaging, media, and user data; identified
-    by projectId and authenticated with an appApiKey.
-- name: SmartLink
-  description: Smart deep link with platform targets (android/ios/web), launch page,
-    and pixel-tracking flags. Created singly or via bulk CSV upload.
-- name: PushNotification
-  description: Rich app-push message (text, image, gif, video, YouTube webview, HTML
-    webview, silent) delivered to app users.
-- name: EmailMessage
-  description: Email campaign sent to a single user, specific users, or all users.
-- name: SMSMessage
-  description: SMS campaign sent to specific user IDs, all users, a target list, or
-    specific numbers; includes subscribe/unsubscribe management.
-- name: WebPush
-  description: Web push notification to browser subscribers.
-- name: AutoMessage
-  description: Automation-journey message that can be fired or cancelled server-side.
-- name: MediaFile
-  description: Photo or video asset in the project media library.
+- name: Project
+  aliases: [App]
+  description: The tenant. Owns every channel, campaign, media asset, user and event; identified by projectId.
+  identifiers: [projectId]
+  credentials: [appApiKey, 'Parse application id + master key (backend)']
+  attributes: [account_subdomain, custom domain]
 - name: User
-  description: An end user/profile in the CDP; carries logged events and purchases.
+  description: An end-user profile in the CDP, assembled from SDK capture and host-app supplied data.
+  identifiers: [userId]
+  system_attributes:
+  - {name: userId, description: app user id, captured: set by host app}
+  - {name: madid, description: advertiser id (IDFA / Google Advertising ID), captured: SDK}
+  - {name: madidIdtype, description: advertising_id (Android) or idfa (iOS), captured: SDK}
+  - {name: name, captured: host app user object}
+  - {name: email, aliases: [userEmail], captured: host app user object}
+  - {name: phone, captured: host app user object}
+  - {name: devices, description: array of device advertising ids, captured: SDK}
+  - {name: platform, values: [iOS, Android, Web]}
+  - {name: devicemodel}
+  - {name: os_ver}
+  - {name: appversion}
+  - {name: userAgent}
+  - {name: language}
+  - {name: country}
+  - {name: city}
+  - {name: operator, description: telecom provider}
+  - {name: usagecounter, description: increments on every app open}
+  - {name: installationAt}
+  - {name: lastSeenAt}
+  - {name: pushEnabled}
+  - {name: ltv, description: total revenue attributed to the user}
+  - {name: ordersNum}
+  - {name: lastOrderValue}
+  - {name: lastOrderDate}
+  - {name: smartlink_id, description: the SmartLink that acquired the user, captured: on matching}
+  - {name: reinstallcount, aliases: [reinstall_count], captured: on matching}
+  - {name: reinstall_source, description: SmartLink id that caused the reinstall, captured: on matching}
+  - {name: additional_params, description: params returned from deferred-deeplink matching, captured: on matching}
+  custom_attributes: user-defined per platform, logged through the SDKs
 - name: Event
-  description: A logged user event (logEvent) or purchase (logPurchase) feeding the CDP.
+  description: A timestamped user action. The spine of the CDP and the trigger source for automation journeys.
+  identifiers: [event_name, userId, timestamp]
+  structure: {event_name: string, userId: string, timestamp: ISO 8601, properties: object}
+  categories: [system, custom]
+  system_events:
+  - {name: smart link open, keys: [SDL URL parameters, location, header, userId, smartlink id]}
+  - {name: smart link matching, when: app installation from an SDL is detected}
+  - {name: smart link deeplink opened, when: app opened from an SDL}
+  - {name: appInstalled, keys: [tracked|organic, SDL URL extra parameters, smartlink id]}
+  - {name: appUninstalled, reason_codes: [BadDeviceToken, DeviceTokenNotForTopic, InvalidParameters, InvalidRegistration,
+        MismatchSenderId, MissingDeviceToken, NotRegistered, Unregistered]}
+  - {name: appOpen, keys: [from Deep Link|from Push|organic, smartlink id]}
+  - {name: email received, keys: [campaign name, campaign id]}
+  - {name: email opened, keys: [campaign name, campaign id]}
+  - {name: email unsubscribe, keys: [campaign name, campaign id]}
+  - {name: email resubscribe, keys: [campaign name, campaign id]}
+  - {name: SMS received, keys: [campaign name, campaign id]}
+  - {name: appPush received, keys: [campaign name, campaign id, smartlink id]}
+  - {name: appPush open, keys: [campaign name, campaign id, smartlink id]}
+  - {name: appPush dismiss, keys: [campaign name, campaign id, smartlink id]}
+  - {name: appPush conversion, keys: [campaign name, campaign id, smartlink id]}
+  - {name: webPush received, keys: [campaign name, campaign id]}
+  - {name: automator trigger, keys: [automessage name, automessage id]}
+  - {name: automator received, keys: [automessage name, automessage id]}
+  - {name: automator open, keys: [automessage name, automessage id]}
+  - {name: automator conversion, keys: [automessage name, automessage id]}
+  - {name: purchase}
+  - {name: landing page open}
+  custom_event_examples: [product_viewed, add_to_cart, checkout_started, subscription_started, loan_application_submitted]
+  written_by: 'POST /user_log_event/{projectId}/{userId} with {action, type, value{campaign_id, campaign_name, extra_params}}'
+  read_by: 'GET /user_log_event/{projectId}/{userId}'
+- name: Purchase
+  description: A revenue event; the input to ltv, ordersNum, lastOrderValue and lastOrderDate on the user profile.
+  written_by: 'POST {Appbackend ServerURL}/functions/logPurchase'
+  fields: [userId, name, amount, currency, platform, smartlink_id]
+  note: Attribution to the acquiring SmartLink is carried on the purchase itself via smartlink_id.
+- name: SmartLink
+  description: >-
+    A smart deep link with per-platform targets, a launch page, campaign parameters and
+    pixel tracking. Also the attribution unit — its id propagates onto users, events
+    and purchases.
+  identifiers: [smartlink id]
+  fields: [name, description, 'targates{android{primary,fallback}, ios{primary,fallback}, web}', 'params[]',
+    'launch_page{header}', image, tag, media_source, web_push_subscription, FBpixel_tracking,
+    twitter_pixel_tracking, google_ads_pixel_tracking, linkedIn_pixel_tracking, snapchat_pixel_tracking]
+  created_by: ['POST /apps/{projectId}/smartlinks', 'POST /apps/{projectId}/smartlinksbulk (CSV)']
+- name: MicroPage
+  description: A hosted no-code landing page, usable as a SmartLink launch page or a standalone campaign destination.
+- name: Campaign
+  description: >-
+    A send across one channel, created in the dashboard or by POST /{projectId}/send.
+    Carries campaign_name and campaign_id, which are stamped onto the delivery events.
+  identifiers: [campaign_id, campaign_name]
+  channels: [appPush, email, SMS, webPush, WHATSAPP, UOWHATSAPP]
+  scheduling: [once, recurring, timezone-sensitive]
+  audiences: [all users, segment, specific user (O2O), target list]
+- name: PushNotification
+  parent: Campaign
+  types: [text, photo, gif, video, htmlWebView, webView, youtube webview, silent]
+  fields: [message, title, sound, campaignName, type, mutable-content, content-available, category,
+    attachment, image-url, url, call2action, orientation, localization, optionals, 'receivers[]',
+    targetUserIds, targetType, template_name, '$variable*']
+- name: EmailMessage
+  parent: Campaign
+  fields: [message, subject, template_name, 'type (HTML|Text)', 'receivers[]{userID,email}', users_id]
+- name: SMSMessage
+  parent: Campaign
+  fields: [message, 'receivers[]{userID,mobileNum}', users_id, target_list_name, template_name]
+- name: WebPush
+  parent: Campaign
+  fields: [message, template_name, userId, '$variable*']
+- name: WhatsAppMessage
+  parent: Campaign
+  variants:
+  - {key: WHATSAPP, rail: WhatsApp Business API, fields: [vendor, template_name, lang_code, 'parameters{body[],imageUrl}', 'receivers[]{mobileNum}']}
+  - {key: UOWHATSAPP, rail: WhatsApp Lite, fields: [message, random_string, imageUrl, documentUrl, 'receivers[]{mobileNum}']}
+  vendors_documented: [routemobile, twilio]
+- name: WhatsAppTemplate
+  description: A Meta-approved WhatsApp message template.
+  created_by: 'POST https://notify.appgain.io/{projectId}/create_whatsapp_template'
+  fields: [template_name, 'language[]', template_category, template_type, 'components{header,body{text,example[]},buttons{type,elements[]}}']
+- name: TargetList
+  description: A named list of mobile numbers used as an SMS/WhatsApp audience; populated by subscribe calls or CSV upload.
+  identifiers: [target_list_name]
+  managed_by: ['POST /{projectId}/smsSubscribe', 'PUT /{projectId}/smsUnSubscribe', dashboard CSV upload]
+- name: Segment
+  description: A saved audience defined over user attributes and events; the entry condition for an automation journey.
+- name: AutomationJourney
+  aliases: [AutoMessage, automessage]
+  description: >-
+    A multi-step, multi-channel rule fired from a named trigger point, with per-step
+    channel, content and grace period, plus a server-side anti-spam guard.
+  identifiers: [triggerPointName, automessage id, automessage name]
+  fired_by: ['GET /automessages/{projectId}/firevent/{trigger}/{userId}', 'POST /automessages/{projectId}/firevent/v2/{trigger} (users[] batch)']
+  cancelled_by: 'DELETE /automessages/{projectId}/firevent/{trigger}/{userId}'
+- name: MediaFile
+  description: A photo or video in the project media library, referenced by campaigns as an attachment.
+  managed_by: ['POST /{projectId}/upload', 'GET /{projectId}/upload', 'DELETE /{projectId}/delete_media_files']
+- name: MessageTemplate
+  description: Reusable push/SMS/email/WhatsApp content with $variable personalisation placeholders.
+  identifiers: [template_name]
 relationships:
-- from: SmartLink
-  to: App
-  type: belongs_to
-  via: projectId
-- from: PushNotification
-  to: App
-  type: belongs_to
-  via: projectId
-- from: EmailMessage
-  to: App
-  type: belongs_to
-  via: projectId
-- from: SMSMessage
-  to: App
-  type: belongs_to
-  via: projectId
-- from: WebPush
-  to: App
-  type: belongs_to
-  via: projectId
-- from: AutoMessage
-  to: App
-  type: belongs_to
-  via: projectId
-- from: MediaFile
-  to: App
-  type: belongs_to
-  via: projectId
-- from: App
-  to: User
-  type: has_many
-  via: projectId
-- from: User
-  to: Event
-  type: has_many
-  via: userId
-- from: Event
-  to: User
-  type: belongs_to
-  via: userId
+- {from: SmartLink, to: Project, type: belongs_to, via: projectId}
+- {from: MicroPage, to: Project, type: belongs_to, via: projectId}
+- {from: Campaign, to: Project, type: belongs_to, via: projectId}
+- {from: MediaFile, to: Project, type: belongs_to, via: projectId}
+- {from: AutomationJourney, to: Project, type: belongs_to, via: projectId}
+- {from: Project, to: User, type: has_many, via: projectId}
+- {from: User, to: Event, type: has_many, via: userId}
+- {from: Event, to: User, type: belongs_to, via: userId}
+- {from: User, to: Purchase, type: has_many, via: userId}
+- {from: Purchase, to: SmartLink, type: belongs_to, via: smartlink_id}
+- {from: User, to: SmartLink, type: belongs_to, via: smartlink_id, note: acquisition attribution}
+- {from: Event, to: Campaign, type: belongs_to, via: campaign_id}
+- {from: Event, to: SmartLink, type: belongs_to, via: smartlink id}
+- {from: Event, to: AutomationJourney, type: belongs_to, via: automessage id}
+- {from: Campaign, to: PushNotification, type: has_one, via: appPush body key}
+- {from: Campaign, to: EmailMessage, type: has_one, via: email body key}
+- {from: Campaign, to: SMSMessage, type: has_one, via: SMS body key}
+- {from: Campaign, to: WebPush, type: has_one, via: webPush body key}
+- {from: Campaign, to: WhatsAppMessage, type: has_one, via: WHATSAPP or UOWHATSAPP body key}
+- {from: WhatsAppMessage, to: WhatsAppTemplate, type: belongs_to, via: template_name}
+- {from: Campaign, to: MessageTemplate, type: belongs_to, via: template_name}
+- {from: Campaign, to: MediaFile, type: has_many, via: attachment / imageUrl}
+- {from: SMSMessage, to: TargetList, type: belongs_to, via: target_list_name}
+- {from: TargetList, to: User, type: has_many, via: mobile_number}
+- {from: AutomationJourney, to: Segment, type: belongs_to, via: entry condition}
+- {from: Segment, to: User, type: has_many, via: attribute/event predicate}
+- {from: SmartLink, to: MicroPage, type: has_one, via: launch_page}
+naming_inconsistencies:
+  note: Recorded so an integrator is not surprised; these are Appgain's own spellings.
+  items:
+  - '`targates` is used for the SmartLink targets object (misspelling of "targets").'
+  - '`userID` inside receivers[] vs `userId` in paths, Parse functions and the CDP attribute table.'
+  - '`users_id` is a COMMA-SEPARATED STRING of ids, not an array.'
+  - '`reinstallcount` (user-profile table) vs `reinstall_count` (CDP table) for the same attribute.'
+  - Channel discriminators are inconsistently cased — `appPush`, `email`, `webPush` lowercase-ish, `SMS`, `WHATSAPP`, `UOWHATSAPP` uppercase.

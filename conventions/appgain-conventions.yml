@@ -1,50 +1,150 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://documenter.getpostman.com/view/4679101/T17KeScV + https://docs.appgain.io/
+source: >-
+  postman/appgain-omnichannel.postman_collection.json (verbatim public collection
+  4679101/T17KeScV, fetched from https://apidocs.appgain.io/api/collections/4679101/T17KeScV)
+  + https://docs.appgain.io/restAPI/introduction/ +
+  https://docs.appgain.io/integrations/n8n-integration/ + live unauthenticated probes
 docs: https://docs.appgain.io/complete-knowledge-base/
 authentication:
   style: apiKey
   header: appApiKey
+  header_case_note: >-
+    The header name is case-inconsistent across Appgain's own published examples —
+    `appApiKey` on api.appgain.io / automator.appgain.io / the smartlink + media
+    endpoints, and lowercase `appapikey` on every notify.appgain.io send example.
+    HTTP header names are case-insensitive so both work, but the docs never state
+    a canonical spelling.
+  also_accepted_as_query_param: true
+  query_param_examples:
+  - GET /user_log_event/{projectId}/{userId}?appApiKey={api_key}
+  - DELETE /{projectId}/delete_media_files?appApiKey={api_key}
   ref: authentication/appgain-authentication.yml
 hosts:
-  description: The messaging platform is split across several product hosts; requests
-    are tenant-scoped by a projectId path segment. A per-account subdomain is used for
-    some smart-link/campaign operations.
+  description: >-
+    Appgain is not one API on one host. The published collection spreads the surface
+    across four hosts behind a Kong gateway, each with its own path convention, and
+    a per-account subdomain for smart links and media. There is no single base URL
+    that reaches all operations.
   api: https://api.appgain.io
   notify: https://notify.appgain.io
   automator: https://automator.appgain.io
   tenant_pattern: https://{account_subdomain}.appgain.io
+  parse_backend: '{Appbackend ServerURL} — per-account Parse Server host, value issued in the dashboard'
+  gateway:
+    product: Kong
+    version_header_observed: kong/0.11.2
+    evidence: probed Via header on https://api.appgain.io/health, 2026-08-13
 url_structure:
-  pattern: /apps/{projectId}/{resource}
-  examples:
-  - POST /apps/{projectId}/smartlinks
-  - POST /apps/{projectId}/media/photo
-  - POST /apps/{projectId}/events/logEvent
+  note: >-
+    There is no uniform path grammar. Four distinct shapes are in use; the
+    /apps/{projectId}/ prefix applies only to the smart-link endpoints.
+  patterns:
+  - host: '{account_subdomain}.appgain.io'
+    pattern: /apps/{projectId}/{resource}
+    examples: ['POST /apps/{projectId}/smartlinks', 'POST /apps/{projectId}/smartlinksbulk?email=&userId=']
+  - host: '{account_subdomain}.appgain.io'
+    pattern: /{projectId}/{resource}
+    examples: ['POST /{projectId}/upload', 'GET /{projectId}/upload', 'DELETE /{projectId}/delete_media_files']
+  - host: notify.appgain.io
+    pattern: /{projectId}/{action}
+    examples: ['POST /{projectId}/send', 'POST /{projectId}/smsSubscribe', 'PUT /{projectId}/smsUnSubscribe',
+      'POST /{projectId}/create_whatsapp_template']
+  - host: automator.appgain.io
+    pattern: /automessages/{projectId}/firevent/{triggerPointName}/{userId}
+    examples: ['GET /automessages/{projectId}/firevent/{trigger}/{userId}', 'DELETE /automessages/{projectId}/firevent/{trigger}/{userId}',
+      'POST /automessages/{projectId}/firevent/v2/{trigger} (batch users[] body)']
+  - host: '{Appbackend ServerURL}'
+    pattern: /functions/{cloudFunction}
+    style: Parse Server cloud functions
+    examples: ['POST /functions/getUserInfo?userId=', 'POST /functions/logPurchase?userId=&name=&currency=&amount=&platform=']
+dispatch_style:
+  note: >-
+    The messaging surface is a single POST /{projectId}/send endpoint whose behaviour
+    is selected by the top-level body key, not by the path or a query parameter. This
+    is the single most important convention for an agent calling Appgain.
+  endpoint: POST https://notify.appgain.io/{projectId}/send
+  body_discriminators:
+  - {key: appPush, channel: mobile push}
+  - {key: email, channel: email}
+  - {key: SMS, channel: SMS}
+  - {key: webPush, channel: web push}
+  - {key: WHATSAPP, channel: WhatsApp Business API (vendor-routed, e.g. routemobile)}
+  - {key: UOWHATSAPP, channel: WhatsApp Lite (personal-account rail)}
+audience_targeting:
+  note: Every channel selects recipients the same three ways, inside the channel object.
+  modes:
+  - {mode: explicit receivers, field: 'receivers[] ({userID, email|mobileNum})'}
+  - {mode: specific users by id, field: 'users_id (comma-separated string)'}
+  - {mode: named target list, field: target_list_name}
+  - {mode: all users, field: omit all of the above}
 content_type:
   request: application/json
-  bulk_uploads: multipart/form-data
-  accept: application/json
+  file_uploads: multipart/form-data
+  response: application/json; charset=utf-8
 idempotency:
   supported: false
-  notes: No documented idempotency-key header on the Appgain REST API as of this pass.
+  notes: >-
+    No idempotency key, request-id, or de-duplication header appears anywhere in the
+    public collection, the REST docs, or the n8n integration guide. Retrying a
+    POST /{projectId}/send re-sends the campaign. The platform does ship a
+    server-side "Smart Anti-Spam" rule in Marketing Automation that will not send the
+    SAME automation message to the SAME user twice in one day, but that is a campaign
+    policy on journey messages, not a client-supplied idempotency contract on the
+    REST API, and it does not cover direct /send calls.
+  anti_spam_reference: https://docs.appgain.io/Marketing%20Automation/gettingStarted/
 pagination:
-  supported: unknown
-  notes: Not documented in the public API reference / Postman collection; most endpoints
-    are action/send-oriented rather than large collection reads.
+  supported: none-documented
+  notes: >-
+    No pagination parameters or envelope fields are documented on any endpoint. The
+    two read operations in the published surface (GET /{projectId}/upload for the
+    media library and GET /user_log_event/{projectId}/{userId}) take no limit,
+    cursor, offset or page parameter.
+request_tracing:
+  request_id_header: none
+  response_headers_observed: [x-api-version, x-kong-upstream-latency, x-kong-proxy-latency, via]
+  notes: >-
+    No correlation/request-id header is returned. The only version signal is
+    `x-api-version` (see lifecycle/appgain-lifecycle.yml).
 versioning:
   scheme: product-release
-  notes: The platform is versioned by product release (e.g. Product V11-V14) rather
-    than by an API version path segment; see changelog/appgain-changelog.yml.
+  in_path: false
+  header: x-api-version
+  notes: >-
+    There is no version segment in any API path. The gateway returns an
+    `x-api-version` response header per service, and the product itself is versioned
+    by dated release notes (Product V7..V14). One exception exists inside the path —
+    automator.appgain.io/automessages/{projectId}/firevent/v2/{trigger} — the v2
+    batch form documented in the n8n guide, which coexists with the unversioned v1
+    single-user form still in the published collection.
+  ref: lifecycle/appgain-lifecycle.yml
 error_envelope:
   format: json
-  notes: Errors returned as JSON with standard HTTP status codes; no RFC 9457
-    problem+json usage documented.
-webhooks:
-  supported: partial
-  notes: Automation journeys can "fire automessage" and the WhatsApp Lite release notes
-    document AI-ready webhook integrations; there is no published AsyncAPI or webhook
-    event catalog.
+  shape: '{"status": "failed", "message": "<human string>"}'
+  rfc9457: false
+  problem_json: false
+  notes: >-
+    Status is a lowercase string, not a boolean or code, and casing is inconsistent
+    ("failed" on api/automator, "Failed" on notify). There is no machine-readable
+    error code field, so an agent must branch on the human-readable `message`.
+  ref: errors/appgain-problem-types.yml
 rate_limiting:
-  signaled: unknown
-  notes: No documented rate-limit headers. WhatsApp Lite documents a per-day send cap
-    (300 messages) as a plan quota rather than an API rate limit.
+  signaled: false
+  response_headers: none
+  notes: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header is returned and no numeric
+    API rate limit is published. Appgain's own n8n guide tells integrators to
+    "respect API rate limits and implement exponential backoff" without ever stating
+    what those limits are.
+  ref: rate-limits/appgain-rate-limits.yml
+webhooks:
+  supported: outbound-only
+  notes: >-
+    Appgain emits outbound delivery and user-reply webhooks from the WhatsApp Lite
+    channel; there is no inbound webhook-registration API and no published event
+    schema.
+  ref: asyncapi/appgain-webhooks.yml
+cors:
+  access_control_allow_origin: '*'
+  access_control_allow_methods: [GET, POST, OPTIONS, PUT, DELETE, PATCH, HEAD]
+  notes: Observed on api.appgain.io, notify.appgain.io and automator.appgain.io.

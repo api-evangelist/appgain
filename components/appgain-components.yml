@@ -1,0 +1,73 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.appgain.io/SDK/web/installAppgainWebSDK/ +
+  https://docs.appgain.io/SDK/web/installShrinkitWebSDK/ +
+  https://docs.appgain.io/Micro%20Pages/gettingStarted/ +
+  https://docs.appgain.io/smartDeepLink/gettingStarted/
+note: >-
+  Appgain's client-side surface is script-tag loaders and hosted pages rather than a
+  component library — there are no named web components or element classes to
+  catalogue. Distinct from the server-side/mobile SDKs in
+  packages/appgain-packages.yml. Everything below is a documented install; where the
+  documented asset is dead that is recorded rather than omitted.
+families:
+- name: Appgain Web SDK
+  kind: script-loader
+  loader: https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/AppgainSDK.min.js
+  install: '<script src="https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/AppgainSDK.min.js"></script>'
+  config_object: appgainConfig (projectId + apiKey supplied inline in the page)
+  status: live
+  http_status: 200
+  pinned: false
+  integrity_attribute: false
+  provides:
+  - Web push subscription prompt and browser-push registration
+  - Web user identification and custom event logging into the CDP
+  - Smart deep link / deferred deep link matching on the web
+  docs:
+  - https://docs.appgain.io/SDK/web/installAppgainWebSDK/
+  caution: >-
+    The documented install places the project apiKey in client-side page source. It is
+    the same appApiKey that authorises server-side sends (see
+    authentication/appgain-authentication.yml), and Appgain publishes no separate
+    public/publishable web key.
+- name: Shrinkit / Micro Pages web SDK
+  kind: script-loader
+  loader: https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/Micro.min.js
+  install: '<script src="https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/Micro.min.js"></script>'
+  companion: 'https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js (Firebase JS SDK 7.24.0, released 2020)'
+  status: broken
+  http_status: 404
+  verified: '2026-08-13'
+  variants: [multi-page website, single-page website, Shopify store]
+  docs:
+  - https://docs.appgain.io/SDK/web/installShrinkitWebSDK/
+  note: The documented CDN asset returns 404, so all three published install variants are currently non-functional.
+- name: Micro Landing Pages
+  kind: hosted-page
+  status: live
+  description: >-
+    No-code hosted micro landing pages built in the dashboard with a drag-and-drop
+    page builder, served on the account subdomain (or a configured custom domain) and
+    used as the launch page behind a smart deep link.
+  features: [SEO configuration, per-platform and per-location redirect targets, popup/link CTAs,
+    per-platform/country/browser hit analytics]
+  docs:
+  - https://docs.appgain.io/Micro%20Pages/gettingStarted/
+  - https://docs.appgain.io/Micro%20Pages/configureForSEO/
+  - https://docs.appgain.io/HowTo/customDomainConfiguration/
+- name: Smart Deep Link launch page
+  kind: hosted-page
+  status: live
+  description: >-
+    The interstitial page a smart link renders while it resolves the platform target,
+    configurable via the launch_page object on POST /apps/{projectId}/smartlinks
+    (header text, image), with optional web-push subscription capture and Facebook,
+    Twitter, Google Ads, LinkedIn, Snapchat and TikTok pixel firing.
+  docs:
+  - https://docs.appgain.io/smartDeepLink/gettingStarted/
+  - https://docs.appgain.io/HowTo/CreatSmartDeepLink/
+third_party_embeds:
+  note: Storefront apps rather than components; listed for completeness.
+  items: [Shopify app, Zid app, Salla app, WooCommerce, Zapier, n8n, Odoo]

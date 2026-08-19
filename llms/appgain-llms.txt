@@ -1,0 +1,125 @@
+# Appgain — AI Workforce Platform
+
+> Appgain.io is the AI Workforce Platform for MENA businesses. We deploy intelligent agents that handle call centers, sales, CRM, and marketing automation across WhatsApp, mobile apps, and more.
+
+## Pages
+
+- [Home](/): AI Workforce Platform overview for MENA businesses.
+- [About](/about): Company story, mission, and team.
+- [Pricing](/pricing): Plans and pricing for Appgain platform.
+- [Contact](/contact): Get in touch with Appgain.
+- [Request Demo](/request-demo): Book a personalized product demo.
+- [Use Cases](/use-cases): Industry and workflow use cases.
+- [Integrations](/integrations): Supported third-party integrations.
+- [Blog](/blogs): Insights on AI, automation, and customer engagement.
+- [Glossary](/glossary): Marketing automation and AI terminology.
+- [eBooks](/ebooks): Free guides and resources.
+- [FAQs](/faqs): Frequently asked questions.
+- [Partners](/partners): Partner program for agencies and integrators.
+- [Affiliates](/affiliates): Affiliate program details.
+- [Tech4Good](/tech4good): Social impact initiatives.
+- [Newsroom](/newsroom): Press and company news.
+- [WhatsApp Business API](/whatsapp): WhatsApp messaging platform.
+- [Email Marketing](/email): Email campaign and automation tools.
+- [SMS Marketing](/sms): SMS campaign platform.
+- [Web Push](/web-push-notifications): Browser push notifications.
+- [Push Notifications](/push-notifications): Rich mobile push.
+- [Omnichannel Messaging](/omni-channel-messaging): Unified multichannel campaigns.
+- [CDP](/cdp): Customer Data Platform.
+- [CRM](/crm): Marketing CRM.
+- [Marketing Automation](/marketing-automation): Visual workflow automation.
+- [Unified Inbox](/unified-inbox): All conversations in one inbox.
+- [AI Customer Bot](/ai-customer-bot): RAG-powered support chatbot.
+- [AI Call Intelligence](/ai-call-intelligence): Call transcription and analytics.
+- [Bot Builder](/bot-builder): Visual conversational bot builder.
+- [Sequences](/sequences): Multi-step drip campaigns.
+- [Broadcast](/broadcast): Bulk messaging across channels.
+
+## Company
+
+- Founded: 2016
+- HQ: Cairo, Egypt & Istanbul, Turkey
+- Website: https://appgain.io
+- Contact: https://appgain.io/contact
+
+## Products
+
+### AI Agents
+- **AI Customer Bot**: RAG-powered chatbot for customer support across WhatsApp, web, and mobile — with human handoff.
+- **AI Call Intelligence**: Real-time call transcription, sentiment analysis, and action-item extraction.
+- **Visual Bot Builder**: Drag-and-drop flow editor for building conversational bots without code.
+
+### Channels
+- **WhatsApp Business API**: Send personalized campaigns, automate support, and broadcast at scale via WhatsApp.
+- **Email Marketing**: Drag-and-drop email builder with automation, warm-up, and deliverability tools.
+- **SMS Marketing**: High-conversion SMS campaigns with multi-vendor routing.
+- **Rich Push Notifications**: Video, carousel, and interactive push formats for mobile apps.
+- **Web Push Notifications**: Browser-based push for visitor re-engagement.
+- **Broadcast**: Bulk messaging across WhatsApp, SMS, email, and push from one dashboard.
+
+### Orchestration
+- **Marketing Automation**: Visual workflow builder for multi-channel automated campaigns.
+- **Sequences**: Multi-step drip campaigns for onboarding, nurturing, and re-engagement.
+- **Omnichannel Messaging**: Unified campaign management across all channels with behavioral triggers.
+- **Unified Inbox**: Single inbox for all customer conversations across WhatsApp, email, SMS, and chat.
+
+### Data & Insights
+- **Customer Data Platform (CDP)**: Unified customer profiles, event tracking, and audience segmentation.
+- **Marketing CRM**: Customer relationship management with behavioral segmentation and targeting.
+
+## Use Cases
+
+- E-commerce: abandoned cart recovery, order updates, promotional campaigns
+- Financial services: transaction alerts, KYC reminders, customer onboarding
+- Healthcare: appointment reminders, patient communication
+- Retail: loyalty programs, personalized offers, store notifications
+- Gaming: player engagement, in-app event notifications
+- Travel & hospitality: booking confirmations, itinerary updates
+
+## Partner Program
+
+Appgain runs a structured partner program for agencies, consultants, system integrators, telecom/PBX providers, and technology partners.
+
+### Partner Tiers
+- **Registered Partner**: For new agencies, consultants, and solution providers — referrals, early projects, product familiarization.
+- **Solutions Partner**: For active implementation and service partners — client deployment, recurring services, co-selling, workflow delivery.
+- **Strategic Partner**: For high-impact ecosystem and enterprise partners — joint go-to-market, larger implementations, integration depth, market expansion.
+
+### What Partners Deliver
+- AI-powered customer engagement and chatbot automation
+- Omnichannel communication workflows (WhatsApp, SMS, email, push, voice)
+- AI call intelligence with Arabic and English transcription
+- CRM and lead management automation
+- Campaign and lifecycle automation
+- Workflow orchestration and cross-channel revenue recovery
+- AI agents for sales and support
+
+### Industries Served
+- Retail and e-commerce
+- Real estate and property
+- Tourism and hospitality
+- Financial services and fintech
+- Call-center and service operations
+
+### Key Differentiators for Partners
+- Arabic-first AI — strong for MENA markets
+- WhatsApp-native workflows — conversational commerce
+- AI call intelligence — call centers, service teams
+- Replaces 3–4 disconnected tools in one unified platform
+- 1,200+ businesses served, 10+ years of execution
+
+Partner page: https://appgain.io/partners
+Apply: https://appgain.io/partners#partner-form
+
+## Integrations
+
+Appgain integrates with Shopify, WooCommerce, Zapier, n8n, and dozens of other platforms.
+
+## Resources
+
+- Blog: https://appgain.io/blogs
+- Demo Center: https://appgain.io/demo
+- Glossary: https://appgain.io/glossary
+- Pricing: https://appgain.io/pricing
+- Request Demo: https://appgain.io/request-demo
+- Partners: https://appgain.io/partners

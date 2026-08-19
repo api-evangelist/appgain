@@ -1,0 +1,103 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  postman/appgain-omnichannel.postman_collection.json + https://docs.appgain.io/ +
+  live probes of api.appgain.io / notify.appgain.io / automator.appgain.io on
+  2026-08-13
+note: >-
+  Derived from Appgain's own published contract and observed responses. Appgain makes
+  no formal conformance or certification claim anywhere on its public surface, so
+  every `conforms: true` below is a mechanical observation, not a vendor assertion.
+  No Compliance pointer is emitted — see the compliance_posture block.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document on any host. /openapi.json, /openapi.yaml,
+    /swagger.json, /v1/openapi.json, /api-docs, /swagger/v1/swagger.json all miss on
+    api.appgain.io, apidocs.appgain.io, docs.appgain.io, notify.appgain.io and
+    automator.appgain.io (404 or SPA shell). The machine-readable contract Appgain
+    does publish is a Postman Collection.
+- id: postman-collection-v2
+  conforms: true
+  evidence: >-
+    Public collection 4679101/T17KeScV declares
+    schema https://schema.getpostman.com/json/collection/v2.0.0/collection.json,
+    served from Appgain's own apidocs.appgain.io. 30 requests across 4 folders.
+- id: rest
+  conforms: partial
+  evidence: >-
+    Resource-ish paths and standard verbs on the media, automation and smartlink
+    endpoints, but the entire messaging surface is a single POST /{projectId}/send
+    dispatched on a body key rather than on a resource path.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors are {"status": "failed", "message": "..."} as application/json; no application/problem+json, no type URI, no title/detail/instance.'
+- id: api-key-auth
+  conforms: true
+  evidence: appApiKey request header on every operation, issued per project from the dashboard.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 flow, no token endpoint, no scopes; /.well-known/oauth-authorization-server 404/301 on every host.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration misses on every host.
+- id: rfc8414-oauth-metadata
+  conforms: false
+  evidence: no authorization-server metadata document served.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 301 (api), 404 (docs/apidocs/notify/automator) or the SPA shell (www).
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation header; no deprecation policy published.
+- id: rfc9110-rate-limit-headers
+  conforms: false
+  evidence: no RateLimit-*, X-RateLimit-* or Retry-After header on any observed response.
+- id: idempotency-key
+  conforms: false
+  evidence: no idempotency-key header or parameter in the collection or the docs.
+- id: pagination
+  conforms: false
+  evidence: no limit/cursor/offset/page parameter on either read operation.
+- id: cors
+  conforms: true
+  evidence: 'Access-Control-Allow-Origin: * with an explicit Allow-Methods list and Access-Control-Expose-Headers: X-Api-Version on all three API hosts.'
+- id: tls
+  conforms: true
+  evidence: TLSv1.3 with HSTS on appgain.io, api.appgain.io and apidocs.appgain.io — see security/appgain-domain-security.yml.
+- id: parse-server
+  conforms: true
+  evidence: >-
+    The account backend is Parse Server — /functions/{name} cloud-function calls
+    authenticated with x-parse-application-id and x-parse-master-key, and the org
+    publishes forks of parse-server and parse-dashboard.
+- id: llmstxt
+  conforms: true
+  evidence: https://www.appgain.io/llms.txt returns 200 text/plain, 6,105 bytes, correct llms.txt structure (H1, blockquote summary, link sections).
+- id: a2a-agent-card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json miss on all six hosts.
+- id: mcp
+  conforms: false
+  evidence: no hosted or installable MCP server published — see mcp/appgain-mcp.yml.
+- id: asyncapi
+  conforms: false
+  evidence: no AsyncAPI document; outbound webhooks are advertised in release notes with no event schema.
+compliance_posture:
+  certifications_published: []
+  trust_center: null
+  probe: security/appgain-trust-center.yml probe returned no trust centre on trust.appgain.io, security.appgain.io, or /trust|/security|/compliance
+  claims:
+  - {claim: GDPR data-subject rights described, where: 'https://appgain.io/privacy + cookie policy', kind: policy-statement}
+  - {claim: '"Compliance by design" — consent capture widgets, STOP keyword handling, GDPR exports', where: WhatsApp product page, kind: marketing}
+  - {claim: 'Secure data handling & isolation, role-based access, encrypted messaging, alignment with regional data regulations', where: Tech4Good/nonprofit page, kind: marketing}
+  - {claim: 'Data residency compliance for GCC markets; on-premise and dedicated-cloud deployment options', where: about/solutions pages, kind: marketing}
+  finding: >-
+    No named third-party certification (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP,
+    CSA STAR) is published anywhere on appgain.io, and there is no trust centre or
+    compliance page — /security, /trust and /compliance are not in the site's own
+    sitemap and return the SPA catch-all. The compliance language that exists is
+    marketing copy plus a standard GDPR privacy policy. Because `compliance_published`
+    is meant to record a published compliance PROGRAM, no `Compliance` pointer is
+    emitted.

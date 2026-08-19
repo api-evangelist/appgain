@@ -1,25 +1,126 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://documenter.getpostman.com/view/4679101/T17KeScV + https://docs.appgain.io/overview/AppBoostIntegration/
-docs: https://docs.appgain.io/complete-knowledge-base/
+source: >-
+  postman/appgain-omnichannel.postman_collection.json (verbatim public collection
+  4679101/T17KeScV) + https://docs.appgain.io/restAPI/introduction/ +
+  https://docs.appgain.io/integrations/n8n-integration/ + live unauthenticated probes
+docs: https://docs.appgain.io/restAPI/introduction/
 summary:
   types: [apiKey]
-  api_key_in: [header]
+  api_key_in: [header, query]
   oauth2_flows: []
-  notes: Appgain's REST API uses a per-application API key sent in an HTTP header, with
-    the tenant/project scoped by a projectId in the request path. There is no OAuth2 or
-    OIDC flow on the messaging API; the API key and project ID are issued from the
-    dashboard under Project Settings -> API and SDK Keys.
+  openid_connect: false
+  mutual_tls: false
+  notes: >-
+    Appgain's REST surface is API-key only. A per-project application key is sent in
+    an `appApiKey` request header (lowercase `appapikey` in the notify.appgain.io
+    examples) and the tenant is selected by a `projectId` path segment. There is no
+    OAuth 2.0 authorization server, no OIDC discovery document, no token endpoint and
+    no scope surface anywhere in the published contract — /.well-known/oauth-authorization-server
+    and /.well-known/openid-configuration miss on every host (see
+    well-known/appgain-well-known.yml). Two SECONDARY credential systems exist behind
+    the same platform: the Parse Server backend cloud functions, which take Parse
+    application-id/master-key headers, and the WhatsApp Business vendor path, which
+    additionally carries bearer-style JWTs. Neither is a scoped OAuth flow.
 schemes:
 - name: appApiKey
   type: apiKey
   in: header
   parameter_name: appApiKey
-  description: Application API key issued per project. Passed as the `appApiKey` request
-    header on every REST call (verified across the public Postman collection).
-  sources: [postman/T17KeScV]
+  aliases_observed: [appapikey]
+  description: >-
+    Per-project application API key. The primary credential for every messaging,
+    smart-link, media and event-logging call. Issued in the Appgain dashboard under
+    Project Settings -> API and SDK Keys.
+  used_by_hosts: [api.appgain.io, notify.appgain.io, automator.appgain.io, '{account_subdomain}.appgain.io']
+  sources: [postman/appgain-omnichannel.postman_collection.json, 'https://docs.appgain.io/restAPI/introduction/']
+- name: appApiKeyQuery
+  type: apiKey
+  in: query
+  parameter_name: appApiKey
+  description: >-
+    The same project API key accepted as a URL query parameter on at least two
+    published operations — GET /user_log_event/{projectId}/{userId} and
+    DELETE /{projectId}/delete_media_files. Appgain publishes these forms itself; a
+    credential in the query string is logged by proxies, gateways and browser
+    history, so header placement should be preferred where both are accepted.
+  sources: [postman/appgain-omnichannel.postman_collection.json]
+- name: parseApplicationId
+  type: apiKey
+  in: header
+  parameter_name: x-parse-application-id
+  description: >-
+    Parse Server application identifier. Required, together with the master key,
+    on the two Parse cloud-function operations in the published collection
+    (/functions/getUserInfo, /functions/logPurchase) against the per-account
+    Appbackend server URL. Appgain's backend is built on the open-source Parse
+    Server stack.
+  sources: [postman/appgain-omnichannel.postman_collection.json]
+- name: parseMasterKey
+  type: apiKey
+  in: header
+  parameter_name: x-parse-master-key
+  description: >-
+    Parse Server MASTER key. This is an unrestricted, full-privilege credential that
+    bypasses Parse class-level permissions and ACLs — it is not an equivalent of the
+    scoped project API key. Appgain's own published examples send it directly from
+    the integration client, which means the documented path for logging a purchase
+    or reading a user profile requires holding an admin-grade secret in the caller.
+  risk: high
+  sources: [postman/appgain-omnichannel.postman_collection.json]
+- name: whatsappAuthorization
+  type: http
+  scheme: bearer
+  bearer_format: JWT
+  parameter_name: Authorization
+  description: >-
+    A vendor JWT carried IN ADDITION to appapikey on the WhatsApp Business API paths
+    (POST /{projectId}/create_whatsapp_template and WHATSAPP sends). The token
+    payload seen in Appgain's own n8n guide carries user_id, username, customer_id,
+    send_message and reseller claims. It is not issued by any documented Appgain
+    token endpoint; the docs do not say how an integrator obtains or refreshes it.
+  sources: ['https://docs.appgain.io/integrations/n8n-integration/']
+- name: whatsappAuthToken
+  type: apiKey
+  in: header
+  parameter_name: authToken
+  description: >-
+    A second JWT header sent alongside Authorization on the WhatsApp template-creation
+    call. Its issuance and lifetime are undocumented.
+  sources: ['https://docs.appgain.io/integrations/n8n-integration/']
 path_scoping:
   parameter: projectId
   location: path
-  example: https://api.appgain.io/apps/{projectId}/smartlinks
-credentials_source: Project Settings -> API and SDK Keys (Appgain dashboard)
+  description: >-
+    Tenancy is expressed in the path, not in the credential. Every operation is
+    scoped by a projectId that the caller supplies; the API key is bound to that
+    project.
+  examples:
+  - https://notify.appgain.io/{projectId}/send
+  - https://automator.appgain.io/automessages/{projectId}/firevent/{trigger}/{userId}
+  - https://{account_subdomain}.appgain.io/apps/{projectId}/smartlinks
+credentials_source: Appgain dashboard -> Project Settings -> API and SDK Keys
+rotation:
+  documented: false
+  notes: No key-rotation, key-expiry or multi-key policy is published.
+failure_behaviour:
+  method: probed
+  probed: '2026-08-13'
+  observations:
+  - host: automator.appgain.io
+    request: GET /automessages/{projectId}/firevent/{trigger}/{userId} with an invalid appApiKey
+    status: 401
+    body: '{"status": "failed", "message": "Not Authorized Api Key"}'
+  - host: api.appgain.io
+    request: GET /user_log_event/{projectId}/{userId}?appApiKey=<invalid>
+    status: 401
+    body: '{"status": "failed", "message": "app API key or user authentication required"}'
+  - host: notify.appgain.io
+    request: POST /{projectId}/send with an invalid appapikey
+    status: 500
+    body: '{"exception": "''NoneType'' object has no attribute ''api_key''", "message": "something went wrong", "status": "Failed"}'
+    note: >-
+      The send endpoint does not return 401 for a bad credential. It returns HTTP 500
+      and echoes a server-side Python AttributeError back to the caller. An agent
+      cannot distinguish "your key is wrong" from "the service is broken" on the
+      single most important endpoint in the API.

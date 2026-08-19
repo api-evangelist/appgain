@@ -1,58 +1,200 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://docs.appgain.io/SDK/gettingStarted/ + registry verification (pub.dev, cocoapods.org, registry.npmjs.org, github.com/appgain)
+source: >-
+  https://docs.appgain.io/SDK/gettingStarted/ + per-platform install pages, verified
+  against registry metadata endpoints: pub.dev, trunk.cocoapods.org,
+  registry.npmjs.org, search.maven.org, and Appgain's own Nexus at
+  https://sdk.appgain.io/repository/maven-releases/
+note: >-
+  Appgain distributes its Android SDK from a SELF-HOSTED Maven repository
+  (sdk.appgain.io), not Maven Central — a search of Maven Central for
+  g:io.appgain.sdk returns zero results. The self-hosted repo is the authoritative
+  source for the Android version and it is materially AHEAD of the documentation:
+  the repo publishes 5.1.11 (2026-05-24) while the install page still says 5.0.1, the
+  Android FAQ says 5.0.0, and the React Native page says 4.4.0. Versions and dates
+  below are read from registry metadata, not from prose.
 packages:
+- language: java
+  platform: android
+  registry: self-hosted-maven
+  registry_url: https://sdk.appgain.io/repository/maven-releases/
+  name: io.appgain.sdk:appgain-android
+  version: 5.1.11
+  published: '2026-05-24'
+  version_source: https://sdk.appgain.io/repository/maven-releases/io/appgain/sdk/appgain-android/maven-metadata.xml
+  install: "implementation 'io.appgain.sdk:appgain-android:5.1.11'"
+  repository_declaration: "maven { url 'https://sdk.appgain.io/repository/maven-releases/' }"
+  url: https://docs.appgain.io/SDK/android/installAppgainSDK/
+  official: true
+  status: active
+  note: >-
+    Not on Maven Central (search.maven.org g:io.appgain.sdk -> numFound 0). Consumers
+    must add Appgain's Nexus as a repository. Appgain's Ionic install page still
+    declares that repository over PLAIN HTTP (http://sdk.appgain.io/...), which
+    modern Gradle blocks by default; the host does serve HTTPS and 301s to it.
+  verified: '2026-08-13'
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: Appgain
+  version: 5.0.0
+  published: '2025-02-19'
+  version_source: https://trunk.cocoapods.org/api/v1/pods/Appgain
+  url: https://cocoapods.org/pods/Appgain
+  install: "pod 'Appgain'"
+  source_code: https://github.com/appgain/appgain-SDK-iOs
+  official: true
+  status: active
+  releases_total: 52
+  verified: '2026-08-13'
+- language: swift
+  platform: ios
+  registry: cocoapods
+  name: Appgain-Rich
+  version: 3.3.0
+  published: '2020-11-23'
+  version_source: https://trunk.cocoapods.org/api/v1/pods/Appgain-Rich
+  url: https://cocoapods.org/pods/Appgain-Rich
+  install: "pod 'Appgain-Rich'"
+  official: true
+  status: stale
+  note: >-
+    Required companion pod for rich (media) push on iOS — the docs instruct adding it
+    to the notification service and content extension targets. Last released
+    2020-11-23, more than four years before the main Appgain pod's current release.
+  verified: '2026-08-13'
 - language: dart
   platform: flutter
   registry: pub.dev
   name: appgain_sdk
   version: 0.0.10
+  published: '2023-05-15'
+  version_source: https://pub.dev/api/packages/appgain_sdk
   url: https://pub.dev/packages/appgain_sdk
-  install: "appgain_sdk: ^0.0.10"
+  install: flutter pub add appgain_sdk
+  publisher: appgain.io
   official: true
-  verified: '2026-07-18'
-- language: swift
-  platform: ios
-  registry: cocoapods
-  name: Appgain
-  url: https://cocoapods.org/pods/Appgain
-  install: "pod 'Appgain'"
-  source_code: https://github.com/appgain/appgain-SDK-iOs
+  status: stale
+  releases_total: 10
+  note: >-
+    Verified first-party — pub.dev reports the verified publisher as appgain.io. Still
+    on a 0.0.x version line and untouched since May 2023.
+  verified: '2026-08-13'
+- language: javascript
+  platform: react-native
+  registry: npm
+  name: react-native-appgain-sdk-library
+  version: 1.0.140
+  published: '2022-03-13'
+  version_source: https://registry.npmjs.org/react-native-appgain-sdk-library
+  url: https://www.npmjs.com/package/react-native-appgain-sdk-library
+  install: npm install react-native-appgain-sdk-library --save
   official: true
-  verified: '2026-07-18'
-- language: java
-  platform: android
-  registry: gradle
-  name: io.appgain.sdk:appgain-android
-  version: 5.0.0
-  url: https://docs.appgain.io/SDK/gettingStarted/
-  install: "implementation 'io.appgain.sdk:appgain-android:5.0.0'"
-  official: true
-  note: Published gradle coordinate from Appgain docs; not present on Maven Central search (distributed via provider/JitPack repo).
-  verified: '2026-07-18'
+  status: stale
+  note: >-
+    This is the package Appgain's React Native install page actually tells you to
+    install. It is published by the npm user `thelo2ai` (not an Appgain org scope) and
+    its declared repository URL is a placeholder,
+    github.com/github_account/react-native-react-native-sdk, which does not exist.
+  verified: '2026-08-13'
 - language: javascript
   platform: react-native
   registry: npm
   name: react-native-appgain-sdk
+  version: 1.0.7
+  published: '2020-03-16'
+  version_source: https://registry.npmjs.org/react-native-appgain-sdk
   url: https://www.npmjs.com/package/react-native-appgain-sdk
   install: npm install react-native-appgain-sdk
   source_code: https://github.com/appgain/react-native-appgain-sdk
   official: true
-  verified: '2026-07-18'
+  status: stale
+  note: >-
+    A second, older React Native package with the confusingly similar name. The docs
+    reference it only in the iOS Podfile line
+    (pod 'react-native-appgain-sdk', path: '../node_modules/react-native-appgain-sdk-library'),
+    which points the pod name at the OTHER package's directory. Two live npm packages,
+    one documented install path.
+  verified: '2026-08-13'
 - language: javascript
   platform: cordova-ionic
   registry: github
   name: Cordova-SDK
+  version: null
+  published: null
   url: https://github.com/appgain/Cordova-SDK
   source_code: https://github.com/appgain/Cordova-SDK
   official: true
-  note: Cordova/PhoneGap/Ionic plugin distributed via the Appgain GitHub org (see also IonicAppgainNGX).
-  verified: '2026-07-18'
+  status: stale
+  note: >-
+    Cordova/PhoneGap/Ionic plugin distributed from the Appgain GitHub org with no
+    tagged release and no registry entry — version is null because there is nothing
+    published to read a version from. Last commit pushed 2022-03-17. Companion repo
+    IonicAppgainNGX last pushed 2020-09-21. Two third-party npm mirrors exist
+    (appgain-cordova-plugin, appgain-ionic-plugin, both 0.0.1 from July 2020) but are
+    published from a personal account, not the Appgain org, so they are not recorded
+    as official.
+  verified: '2026-08-13'
 - language: javascript
   platform: web
-  registry: docs
-  name: Appgain Web SDK
-  url: https://docs.appgain.io/SDK/gettingStarted/
+  registry: cdn
+  name: AppgainSDK.min.js
+  version: null
+  published: '2024-11-30'
+  version_source: 'Last-Modified header on the CDN object (no version in the URL)'
+  url: https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/AppgainSDK.min.js
+  install: '<script src="https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/AppgainSDK.min.js"></script>'
   official: true
-  note: Browser/web JS SDK documented in the Appgain SDK guide (script include); no public registry package.
-  verified: '2026-07-18'
+  status: active
+  note: >-
+    UNPINNED distribution. The documented script tag carries no version and no
+    integrity attribute, so every page load takes whatever is at that path — a
+    consumer cannot tell what they are running and cannot pin it. Version is recorded
+    as null for that reason; the only currency signal available is the object's
+    Last-Modified date (2024-11-30, 105,465 bytes). There is no npm package and no
+    CDN JSON metadata endpoint for it.
+  verified: '2026-08-13'
+- language: javascript
+  platform: web
+  registry: cdn
+  name: Micro.min.js (Shrinkit web SDK)
+  version: null
+  published: null
+  url: https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/Micro.min.js
+  install: '<script src="https://cdn.appgain.io/docs/appgain/appgainSdk/websdk/Micro.min.js"></script>'
+  official: true
+  status: broken
+  note: >-
+    The Shrinkit/micro-pages web SDK script tag published on
+    https://docs.appgain.io/SDK/web/installShrinkitWebSDK/ (including the Shopify
+    install variant) returns HTTP 404 as of 2026-08-13. The documented install is
+    dead.
+  verified: '2026-08-13'
+- language: csharp
+  platform: xamarin
+  registry: none
+  name: Appgain Xamarin SDK
+  version: null
+  published: null
+  url: https://docs.appgain.io/SDK/Xamarin/installAppgainSDK/
+  official: true
+  status: end-of-life
+  note: >-
+    Appgain's own install page opens with "Disclaimer: Appgain Xamarin SDK is End of
+    Life, we are not supporting it any more." No NuGet package; the page describes
+    adding the SDK project by reference. Recorded so the EOL is visible as data rather
+    than only as prose.
+  verified: '2026-08-13'
+summary:
+  official_count: 10
+  active: 3
+  stale: 5
+  broken: 1
+  end_of_life: 1
+  registries: [self-hosted-maven, cocoapods, pub.dev, npm, github, cdn]
+  maven_central: false
+  currency_finding: >-
+    Only the Android SDK (2026-05-24) and the unpinned web script (2024-11-30) have
+    moved in the last two years. Every other first-party client library was last
+    published between 2020 and 2025, and the two React Native packages, the Shrinkit
+    web script and the Xamarin SDK are each broken, duplicated, or explicitly retired.

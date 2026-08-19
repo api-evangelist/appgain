@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: probed
+source: live GET probes of /.well-known/* on every Appgain host in apis.yml + the
+  documented product hosts
+note: >-
+  No Appgain host serves any /.well-known/ document. api.appgain.io answers 301 to
+  the marketing site for every /.well-known/* path; apidocs.appgain.io (Postman
+  documenter), docs.appgain.io (MkDocs), notify.appgain.io and automator.appgain.io
+  all return 404; www.appgain.io returns HTTP 200 for every /.well-known/* path but
+  the body is the identical 4,869-byte React single-page-app shell (md5
+  78c9450425edc9bc7e2944e3f2a57d67), not a document — the same shell is returned for
+  /this-page-does-not-exist-xyz, so those 200s are a catch-all and are recorded as
+  misses. No WellKnown or SecurityTxt pointer is emitted.
+hosts:
+- host: https://api.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 301, hit: false}
+  - {path: /.well-known/openid-configuration, status: 301, hit: false}
+  - {path: /.well-known/oauth-authorization-server, status: 301, hit: false}
+  - {path: /.well-known/oauth-protected-resource, status: 301, hit: false}
+  - {path: /.well-known/api-catalog, status: 301, hit: false}
+  - {path: /.well-known/ai-plugin.json, status: 301, hit: false}
+  - {path: /.well-known/agent-card.json, status: 301, hit: false}
+  - {path: /.well-known/agent.json, status: 301, hit: false}
+- host: https://www.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/openid-configuration, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/oauth-authorization-server, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/oauth-protected-resource, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/api-catalog, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/ai-plugin.json, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/agent-card.json, status: 200, hit: false, body: spa-shell}
+  - {path: /.well-known/agent.json, status: 200, hit: false, body: spa-shell}
+  - {path: /llms.txt, status: 200, hit: true, file: ../llms/appgain-llms.txt,
+     note: real text/plain llms.txt, 6105 bytes — the one machine-readable
+       discovery document Appgain serves}
+- host: https://apidocs.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404, hit: false}
+  - {path: /.well-known/agent-card.json, status: 404, hit: false}
+  - {path: /.well-known/agent.json, status: 404, hit: false}
+  - {path: /.well-known/api-catalog, status: 404, hit: false}
+- host: https://docs.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404, hit: false}
+  - {path: /.well-known/agent-card.json, status: 404, hit: false}
+  - {path: /.well-known/agent.json, status: 404, hit: false}
+  - {path: /.well-known/api-catalog, status: 404, hit: false}
+- host: https://notify.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404, hit: false}
+  - {path: /.well-known/agent-card.json, status: 404, hit: false}
+  - {path: /.well-known/agent.json, status: 404, hit: false}
+- host: https://automator.appgain.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404, hit: false}
+  - {path: /.well-known/agent-card.json, status: 404, hit: false}
+  - {path: /.well-known/agent.json, status: 404, hit: false}
+summary:
+  hosts_probed: 6
+  documents_found: 0
+  agent_card: none
+  security_txt: none

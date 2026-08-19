@@ -1,44 +1,101 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: https://headwayapp.co/appgain-changelog
+note: >-
+  Appgain runs its changelog on Headway. Dates and permalinks below come from the
+  mirrored posts in blogs/, which carry the Headway entry URL and publication date for
+  each release note. Entries are the recent window in reverse-chronological order, not
+  the full history.
 scheme:
   type: labeled-release-notes
   labels: [New, Improvement, Fix]
   current: Product V14
+  numbered_releases_ended: '2024-07-17'
+  note: >-
+    Appgain stopped numbering releases after Product V14 (July 2024). The three
+    entries since then are named by feature rather than by version, so there is no
+    version string an integrator can pin to or compare against.
+cadence:
+  entries_recorded: 11
+  first: '2021-09-08'
+  latest: '2025-06-03'
+  note: >-
+    The most recent changelog entry is from June 2025 — fourteen months before this
+    pass — even though the marketing site was rebuilt in 2026 around an "AI Workforce
+    Platform" position with AI agent products (AI Customer Bot, AI Call Intelligence,
+    Bot Builder, Unified Inbox) that appear in no release note.
 entries:
 - title: Appgain WhatsApp Lite - Release Notes
-  highlights: Expanded daily send limit to 300 messages, rich media support, and
-    AI-ready webhook integrations.
+  date: '2025-06-03'
+  url: https://headwayapp.co/appgain-changelog/appgain-whatsapp-lite-release-notes-316570
   labels: [New, Improvement]
+  highlights: >-
+    WhatsApp Lite 1.0 — daily send limit raised to 300 messages with adaptive pacing;
+    documents, voice notes, images and video in template and session messages;
+    two-button quick replies; outbound webhooks + n8n recipes for LLM workflows;
+    adaptive 30-minute batching pause when Meta spam signals rise; one-way CRM segment
+    sync; Sent/Delivered/Clicked/Confirmed analytics with per-template CTR; delivery
+    and user-reply events streamed out to Zapier, an MCP server or BI stacks.
+  api_relevant: true
 - title: Appgain WhatsApp Business - New Vendor Integration
-  highlights: Route Mobile integration with Green Tick (OBA) verification for brand
-    credibility.
+  date: '2025-05-03'
+  url: https://headwayapp.co/appgain-changelog/appgain-whatsapp-business-new-vendor-integration-316571
   labels: [New]
-- title: Customer Data Platform (CDP) Launch
-  highlights: Real-time event tracking, enhanced user profiles, and AI-powered
-    marketing automation.
+  highlights: Route Mobile added as a WhatsApp Business API vendor, with Green Tick (OBA) verification.
+  api_relevant: true
+- title: 'Product Release Notes: Introducing Appgain''s Customer Data Platform (CDP)'
+  date: '2025-02-16'
+  url: https://headwayapp.co/appgain-changelog/product-release-notes-introducing-appgain-s-customer-data-platform-(cdp)-309694
   labels: [New]
+  highlights: Real-time event tracking, enhanced user profiles, AI-powered marketing automation.
+  api_relevant: true
 - title: Product V14 Release Notes
   version: V14
-  highlights: Retail Gain / Soft POS updates, web push customization, deep links, and
-    email dynamic content.
+  date: '2024-07-17'
+  url: https://headwayapp.co/appgain-changelog/product-v14-release-notes-297127
   labels: [New, Improvement]
+  highlights: Retail Gain / Soft POS updates, web push customization, deep links, email dynamic content.
 - title: Product V13 Release Notes
   version: V13
-  highlights: Dashboard improvements replacing Freshchat with WhatsApp; beta loyalty
-    product launch.
+  date: '2024-06-30'
+  url: https://headwayapp.co/appgain-changelog/product-v13-release-notes-296920
   labels: [Improvement, New]
+  highlights: Dashboard improvements replacing Freshchat with WhatsApp; beta loyalty product launch.
 - title: Product V12 Release Notes
   version: V12
-  highlights: Google Authentication, Shopify/Zid/Salla synchronization, and payment
-    gateway support.
+  date: '2024-03-31'
+  url: https://headwayapp.co/appgain-changelog/product-v12-release-notes-296919
   labels: [New]
+  highlights: Google Authentication, Shopify/Zid/Salla synchronization, and payment gateway support.
 - title: Product V11 Release Notes
   version: V11
-  highlights: UI redesign, segment syncing with Facebook, notification logs, and
-    drag-and-drop page builder.
+  date: '2023-12-27'
+  url: https://headwayapp.co/appgain-changelog/product-v11-release-notes-296917
   labels: [Improvement, New]
+  highlights: UI redesign, segment syncing with Facebook, notification logs, drag-and-drop page builder.
+- title: Product V10 Release Notes
+  version: V10
+  date: '2023-11-01'
+  url: https://headwayapp.co/appgain-changelog/product-v10-release-notes-296915
+  labels: [New, Improvement]
+- title: Product V9 Release Notes
+  version: V9
+  date: '2022-12-28'
+  url: https://headwayapp.co/appgain-changelog/product-v9-release-notes-253735
+  labels: [New, Improvement]
 - title: Product V8 Release Notes
   version: V8
-  highlights: First Shopify app launch and Flutter SDK release.
+  date: '2022-04-25'
+  url: https://headwayapp.co/appgain-changelog/product-v8-release-notes-216821
   labels: [New]
+  highlights: First Shopify app launch and Flutter SDK release.
+- title: Product V7 Release Notes
+  version: V7
+  date: '2021-09-08'
+  url: https://headwayapp.co/appgain-changelog/product-v7-release-notes-206695
+  labels: [New, Improvement]
+breaking_changes:
+  policy: none published
+  note: >-
+    No release note distinguishes breaking changes from additions, and no deprecation
+    is announced in any entry. See lifecycle/appgain-lifecycle.yml.

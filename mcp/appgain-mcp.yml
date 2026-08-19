@@ -1,0 +1,141 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: postman/appgain-omnichannel.postman_collection.json
+search_record:
+  looked_for: an official hosted or installable Appgain MCP server
+  checked:
+  - {target: 'web search "Appgain.io MCP server model context protocol"', result: no Appgain server found}
+  - {target: 'https://www.appgain.io/llms.txt', result: '200 — lists 30 marketing pages and the product catalogue; names no MCP endpoint'}
+  - {target: npm registry search "appgain", result: 'no @appgain/* or *-mcp package'}
+  - {target: 'GitHub org github.com/appgain (8 repos)', result: no MCP server repo}
+  - {target: '/.well-known/* on all six Appgain hosts', result: 'no ai-plugin.json, no oauth-protected-resource — see well-known/appgain-well-known.yml'}
+  note: >-
+    Appgain's WhatsApp Lite release notes mention an "MCP Server" as a DESTINATION
+    that delivery and user-reply webhooks can stream to. That is a claim about where
+    Appgain can send events, not a claim that Appgain publishes an MCP server, and it
+    is not treated as one here.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+  note: >-
+    Nobody ships an Appgain MCP server. The tools below are a DERIVED candidate set,
+    mapped one-to-one onto operations that genuinely exist in Appgain's own published
+    Postman collection. No endpoint is invented. Auth is recorded as api-key because
+    that is what the underlying REST calls require (appApiKey header + projectId path
+    segment).
+server:
+  name: appgain
+  transport: null
+  url: null
+tools:
+- name: send_push_notification
+  description: Send a rich mobile push notification (text, image, gif, video, YouTube or HTML webview, or silent) to app users.
+  source_operation: 'POST https://notify.appgain.io/{projectId}/send (body key: appPush)'
+  collection_items: [send apppush, send apppush text, send apppush text and image, send apppush gif,
+    send apppush video url, send apppush webview, send apppush htmlwebview, send apppush youtube webview,
+    send apppush silent push]
+  consequence: write
+- name: send_email
+  description: Send an email campaign to explicit receivers, a list of user ids, or all users.
+  source_operation: 'POST https://notify.appgain.io/{projectId}/send (body key: email)'
+  collection_items: [send email, send email to specific users, send email to all users]
+  consequence: write
+- name: send_sms
+  description: Send an SMS campaign to specific user ids, specific phone numbers, a named target list, or all users.
+  source_operation: 'POST https://notify.appgain.io/{projectId}/send (body key: SMS)'
+  collection_items: [send sms specific usersid, send sms all users, send sms -to target list, send sms -to spefic numbers]
+  consequence: write
+- name: send_web_push
+  description: Send a web push notification to browser subscribers.
+  source_operation: 'POST https://notify.appgain.io/{projectId}/send (body key: webPush)'
+  collection_items: [send webpush]
+  consequence: write
+- name: sms_subscribe
+  description: Subscribe a mobile number to a named SMS target list.
+  source_operation: POST https://notify.appgain.io/{projectId}/smsSubscribe
+  collection_items: [sms subscribe]
+  consequence: write
+- name: sms_unsubscribe
+  description: Unsubscribe a mobile number from a named SMS target list.
+  source_operation: PUT https://notify.appgain.io/{projectId}/smsUnSubscribe
+  collection_items: [sms un subscribe]
+  consequence: write
+- name: create_smart_link
+  description: Create a smart deep link with per-platform targets, launch page, tracking pixels and campaign parameters.
+  source_operation: POST https://{account_subdomain}.appgain.io/apps/{projectId}/smartlinks
+  collection_items: [create SmartLink]
+  consequence: write
+- name: create_smart_links_bulk
+  description: Create smart deep links in bulk from an uploaded CSV.
+  source_operation: POST https://{account_subdomain}.appgain.io/apps/{projectId}/smartlinksbulk
+  collection_items: [create Smart Link Bulk]
+  consequence: write
+- name: upload_media
+  description: Upload a photo or video into the project media library.
+  source_operation: POST https://{account_subdomain}.appgain.io/{projectId}/upload
+  collection_items: [upload photo, upload video]
+  consequence: write
+- name: list_media
+  description: List the media files in the project media library.
+  source_operation: GET https://{account_subdomain}.appgain.io/{projectId}/upload
+  collection_items: [list media files]
+  consequence: read
+- name: delete_media
+  description: Delete media files from the project media library.
+  source_operation: DELETE https://{account_subdomain}.appgain.io/{projectId}/delete_media_files
+  collection_items: [delete media files]
+  consequence: destructive
+- name: fire_automessage
+  description: Fire an automation-journey trigger point for a user, starting the configured multi-channel journey.
+  source_operation: GET https://automator.appgain.io/automessages/{projectId}/firevent/{triggerPointName}/{userId}
+  collection_items: [fire automessage]
+  consequence: write
+- name: cancel_automessage
+  description: Cancel scheduled automation-journey messages for a user at a trigger point.
+  source_operation: DELETE https://automator.appgain.io/automessages/{projectId}/firevent/{triggerPointName}/{userId}
+  collection_items: [cancel automessage]
+  consequence: write
+- name: log_event
+  description: Log a custom user event (action, type, value, campaign attribution, extra params) into the Appgain CDP.
+  source_operation: POST https://{account_subdomain}.appgain.io/user_log_event/{projectId}/{userId}
+  collection_items: [logEvent]
+  consequence: write
+- name: get_user_events
+  description: Read the events logged for a user.
+  source_operation: GET https://api.appgain.io/user_log_event/{projectId}/{userId}
+  collection_items: [get user logged events]
+  consequence: read
+- name: log_purchase
+  description: Log a purchase (name, amount, currency, platform, acquiring smartlink) for a user.
+  source_operation: POST {Appbackend ServerURL}/functions/logPurchase
+  collection_items: [logPurchase]
+  consequence: write
+  note: Parse Server cloud function — requires x-parse-application-id + x-parse-master-key, not the project API key.
+- name: get_user_info
+  description: Read a user profile from the Parse backend.
+  source_operation: '{Appbackend ServerURL}/functions/getUserInfo'
+  collection_items: [getUserInfo]
+  consequence: read
+  note: Parse Server cloud function — requires the Parse MASTER key.
+coverage:
+  tools_derived: 17
+  collection_requests_covered: 30
+  operations_not_covered: 0
+caveats:
+- >-
+  Input schemas are not derivable to OpenAPI fidelity. Appgain publishes no OpenAPI;
+  the shapes come from example request bodies in the Postman collection, which show
+  which fields exist but not which are required, their types, or their enums.
+- >-
+  Twelve of the seventeen tools are irreversible sends. An MCP server over this API
+  would need a confirmation gate on every send_* tool: there is no idempotency key
+  (conventions/appgain-conventions.yml), so a retried call re-sends the campaign.
+- >-
+  The two Parse tools require a MASTER key, which is an unrestricted admin credential.
+  They should not be exposed to an agent on the same footing as the project-scoped
+  tools.

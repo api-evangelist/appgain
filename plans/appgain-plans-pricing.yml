@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: searched
+source: https://appgain.io/pricing
+evidence:
+- {url: 'https://appgain.io/pricing', status: 200, note: 'React SPA — the server returns the same 4,869-byte shell for every path, so plan copy was read from the site''s own JS bundle at https://www.appgain.io/assets/index-BPjVt-p2.js'}
+- {url: 'https://appgain.io/faqs', status: 200, note: billing FAQ read from the same bundle}
+plan_count: 0
+published_price_list: false
+model: contact-sales
+note: >-
+  Appgain publishes NO priced plan tiers. The /pricing page is a "Pricing Snapshot"
+  of three cost COMPONENTS plus a Contact Sales call to action, and the page's own
+  copy states the position explicitly: "our pricing isn't one-size-fits-all — we'll
+  work with you to build a plan that fits your budget and goals", with custom feature
+  selection, adjustable tiers and volume discounts. plan_count is 0 because there are
+  no named tiers with prices, not because none were looked for. Two specific
+  published figures do exist and are recorded below.
+pricing_components:
+- name: Conversation Fees
+  basis: usage
+  description: WhatsApp conversation charges at Meta's official rates with 0% mark-up.
+  price: pass-through
+  currency: null
+- name: Platform Plan
+  basis: subscription
+  description: Fixed monthly or annual subscription covering automation, analytics and unlimited templates.
+  price: null
+  currency: null
+  note: No amount published.
+- name: OBA Concierge
+  basis: one-time
+  description: One-time fee for WhatsApp Official Business Account (green tick) onboarding; refunded if the green tick is rejected.
+  price: null
+  currency: null
+published_prices:
+- item: Email warm-up service
+  price: 120
+  currency: USD
+  billing: one-time
+  includes: [dedicated IP/domain warm-up, AI-based inboxing behaviour simulation, gradual daily volume increase,
+    'domain authentication (SPF, DKIM, DMARC)', optional Google Workspace or Zoho setup]
+  source_text: 'One-Time Fee: $120 — Covers Setup, Monitoring, And Support Throughout The Warm-Up Phase.'
+trial:
+  offered: true
+  length_days: 14
+  credit_card_required: false
+  terms: '"Start your 14-day free trial. No credit card required. Cancel anytime."'
+free_tier:
+  offered: true
+  name: Free project
+  note: Free projects are deleted if never used.
+billing_terms:
+  source: https://appgain.io/faqs
+  scope: per project — a subscription covers one project, not one user account
+  currencies: 'USD, plus local currency settlement in GCC countries, Turkey and Egypt only'
+  refunds: 'No refunds. Subscriptions can be cancelled at any time and remain usable until the next billing cycle.'
+  migration_support: 'Migration assistance from another platform is offered on paid plans only.'
+  restrictions: >-
+    Prohibited use categories are published in the FAQ — gambling, adult media,
+    inflammatory religious content, and violence.
+channel_pricing_notes:
+- {channel: WhatsApp Business API, note: 'Meta conversation rates passed through at cost; platform subscription separate.'}
+- {channel: WhatsApp Lite, note: 'Priced on messages sent, channel setup fee and monthly maintenance; "contact your account manager for detailed pricing".'}
+- {channel: Email, note: 'Bring your own SMTP/AWS SES provider, or buy Appgain''s email plans (amounts not published).'}

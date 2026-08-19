@@ -1,0 +1,71 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  live unauthenticated probes of api.appgain.io, notify.appgain.io and
+  automator.appgain.io on 2026-08-13, plus the troubleshooting section of
+  https://docs.appgain.io/integrations/n8n-integration/
+format: vendor-json
+rfc9457: false
+note: >-
+  Appgain publishes no error reference. There is no error-code table in the docs, no
+  saved example responses in the public Postman collection, and no OpenAPI to derive
+  4xx/5xx responses from. Everything below was OBSERVED by calling the live API
+  unauthenticated or with a deliberately invalid key. It is a real but small sample —
+  it is not a complete catalogue, and no complete catalogue is published.
+envelope:
+  fields:
+  - {name: status, type: string, values_observed: [failed, Failed], note: 'lowercase on api/automator, capitalised on notify'}
+  - {name: message, type: string, note: human-readable prose; the only signal an agent can branch on}
+  - {name: exception, type: string, note: 'present only on the notify 500 — a leaked server-side Python exception string'}
+  missing:
+  - a stable machine-readable error code
+  - a documentation URI per error type
+  - a field identifying which request field was invalid
+  - a retry/backoff hint
+problems:
+- status: 404
+  host: api.appgain.io
+  title: Not found
+  detail_observed: '{"status": "failed", "message": "not found"}'
+  source_probe: GET https://api.appgain.io/health
+  content_type: application/json; charset=utf-8
+- status: 401
+  host: api.appgain.io
+  title: Missing or invalid application API key
+  detail_observed: '{"status": "failed", "message": "app API key or user authentication required"}'
+  source_probe: GET https://api.appgain.io/user_log_event/{projectId}/{userId}?appApiKey=<invalid>
+  remediation: >-
+    Send the project API key from Project Settings -> API and SDK Keys, preferably as
+    the appApiKey header rather than a query parameter.
+- status: 401
+  host: automator.appgain.io
+  title: Not authorized API key
+  detail_observed: '{"status": "failed", "message": "Not Authorized Api Key"}'
+  source_probe: GET https://automator.appgain.io/automessages/{projectId}/firevent/{trigger}/{userId}
+  remediation: Send a valid appApiKey header scoped to the projectId in the path.
+- status: 500
+  host: notify.appgain.io
+  title: Unhandled server error on send (returned for an invalid or absent API key)
+  detail_observed: '{"exception": "''NoneType'' object has no attribute ''api_key''", "message": "something went wrong", "status": "Failed"}'
+  source_probe: POST https://notify.appgain.io/{projectId}/send with an invalid appapikey header
+  defect: true
+  remediation: >-
+    Treat a 500 from /send as a possible AUTHENTICATION failure, not only as a
+    transient server fault — retrying with backoff will never clear it. This response
+    is also an information-disclosure issue: the internal Python attribute error is
+    echoed to the caller.
+documented_failure_classes:
+  source: https://docs.appgain.io/integrations/n8n-integration/
+  note: >-
+    Named without codes, status mappings or response shapes. Listed here because it
+    is the only error guidance Appgain publishes.
+  classes:
+  - {name: Authentication Errors, guidance: verify API key and project ID}
+  - {name: Rate Limiting, guidance: implement exponential backoff (no limit or header is published)}
+  - {name: Template Errors, guidance: ensure template names exist in the Appgain dashboard}
+  - {name: User ID Issues, guidance: verify user IDs are valid and active}
+  - {name: Network Errors, guidance: implement retry logic for failed requests}
+coverage:
+  observed_problems: 4
+  documented_problems: 0
+  completeness: partial

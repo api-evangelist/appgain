@@ -1,0 +1,81 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://headwayapp.co/appgain-changelog + https://docs.appgain.io/restAPI/introduction/
+  + https://docs.appgain.io/integrations/n8n-integration/ + live header probes of
+  api.appgain.io / notify.appgain.io / automator.appgain.io on 2026-08-13
+versioning:
+  scheme: product-release
+  in_path: false
+  current_product_release: Product V14
+  changelog: https://headwayapp.co/appgain-changelog
+  artifact: changelog/appgain-changelog.yml
+  response_header:
+    name: x-api-version
+    exposed_via: 'Access-Control-Expose-Headers: X-Api-Version'
+    values_observed:
+    - {host: api.appgain.io, value: 0.4.0-prod.1811041530}
+    - {host: notify.appgain.io, value: 0.4.0-prod.1811041630}
+    - {host: automator.appgain.io, value: 0.3.0-dev.162930950}
+    notes: >-
+      Each service returns its own build string. Two observations worth recording as
+      measured facts rather than inferences: the messaging services report a 0.4.0
+      build whose embedded stamp reads 1811041530 (a YYMMDDhhmm form pointing at
+      2018-11-04), and automator.appgain.io — a production host serving the
+      automation-journey API — reports a build tagged `-dev`, not `-prod`. Appgain
+      does not document what this header means or promise anything about it.
+  path_versioning_exception:
+    endpoint: 'https://automator.appgain.io/automessages/{projectId}/firevent/v2/{triggerPointName}'
+    note: >-
+      The only version segment anywhere in the surface. The v2 form takes a batch
+      users[] body and is documented in the n8n integration guide; the unversioned
+      single-user form is still the one published in the Postman collection. Both are
+      live and neither is marked deprecated.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  notes: >-
+    No deprecation policy, no sunset schedule, no RFC 8594 Sunset/Deprecation header
+    support, and no "deprecated" marking on any published operation. The v1 and v2
+    automation endpoints coexist with no statement about which is preferred or how
+    long v1 will be served. No Deprecation pointer is emitted.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: null
+  published: false
+  claimed_at: https://docs.appgain.io/integrations/n8n-integration/
+  claim_text: 'API Status : status.appgain.io'
+  evidence:
+  - {check: 'dig A status.appgain.io', result: 'no record (NXDOMAIN)', date: '2026-08-13'}
+  - {check: 'curl https://status.appgain.io', result: 'connection failed, exit 6 (could not resolve host)', date: '2026-08-13'}
+  notes: >-
+    Appgain's own integration guide points integrators at status.appgain.io as the
+    place to check API status. That hostname does not resolve — there is no status
+    page. Because the check asserts the provider SERVES a status page, no StatusPage
+    pointer is emitted; a documented-but-dead hostname is an absence, not a presence.
+    This is a one-line DNS fix on Appgain's side and would be worth 6 points on the
+    operational-transparency facet.
+support:
+  channel: https://p.appgain.io/slack
+  docs: https://docs.appgain.io/complete-knowledge-base/
+deprecated_operations: []
+observations:
+  documentation_freshness:
+    docs_last_updated: '2025-08-02'
+    source: 'docs.appgain.io page footers ("Last updated: August 2, 2025")'
+    note: >-
+      The MkDocs developer documentation was last touched in August 2025, while the
+      marketing site was rebuilt in 2026 around an "AI Workforce Platform" position.
+      The REST reference has not moved with the product.
+  contract_staleness:
+    postman_collection_published: '2023-03-26'
+    source: postman/appgain-omnichannel.postman_collection.json (info.publishDate)
+    note: >-
+      The public Postman collection — the only machine-readable contract Appgain
+      publishes — was published in March 2023 and does not contain the WhatsApp
+      Business, WhatsApp Lite, or automation-v2 endpoints that the 2025 docs describe.

@@ -1,0 +1,51 @@
+generated: '2026-08-13'
+method: searched
+source: https://headwayapp.co/appgain-changelog (Appgain WhatsApp Lite — Release Notes)
+spec_type: none
+asyncapi_published: false
+webhooks_advertised: true
+note: >-
+  Appgain publishes no AsyncAPI document and no webhook reference page. It DOES
+  advertise an outbound webhook surface, in its own release notes for WhatsApp Lite:
+  delivery and user-reply events stream out to external destinations, and "outbound
+  webhooks + n8n recipes" are listed as an LLM-ready hook. That is a provider claim
+  about a real event surface, so it is recorded here — but the catalogue below is
+  everything Appgain says about it. There is no event schema, no payload example, no
+  signing/verification scheme, no retry policy, no subscription API, and no way to
+  register an endpoint except through the dashboard. Nothing has been invented to
+  fill those gaps.
+direction: outbound-only
+subscription:
+  api: none
+  method: configured in the Appgain dashboard (no documented REST endpoint to register or list webhooks)
+events:
+- name: delivery
+  channel: WhatsApp Lite
+  description: Message delivery events streamed to the configured destination.
+  payload_schema: not published
+  source_text: 'Webhook Out: Delivery & user-reply events stream to Zapier, MCP Server, BI stacks'
+- name: user-reply
+  channel: WhatsApp Lite
+  description: Inbound customer replies streamed to the configured destination.
+  payload_schema: not published
+  source_text: 'Webhook Out: Delivery & user-reply events stream to Zapier, MCP Server, BI stacks'
+documented_destinations: [Zapier, n8n, 'MCP server (customer-side)', BI stacks]
+related_but_not_webhooks:
+  note: >-
+    Two things that look like a webhook surface in Appgain's docs but are not.
+  items:
+  - >-
+    The n8n integration guide's "Trigger: Webhook (Order placed)" examples are n8n's
+    OWN inbound webhooks receiving events from the customer's shop — Appgain is the
+    HTTP client being called downstream, not the event source.
+  - >-
+    Automation-journey trigger points
+    (GET/POST automessages/{projectId}/firevent/{trigger}/{userId}) are an INBOUND
+    REST call the customer makes to fire a journey. They are the opposite direction
+    from a webhook and are catalogued in mcp/appgain-mcp.yml.
+event_catalogue_completeness: minimal
+gaps:
+- No payload schema or example for either event.
+- No signature/HMAC verification scheme published, so a receiver cannot authenticate Appgain's callbacks.
+- No retry, ordering or at-least-once delivery statement.
+- Scoped to WhatsApp Lite only — no delivery/open/click/bounce webhooks documented for push, email, SMS or web push, even though those events are tracked internally (see the system-event table at https://docs.appgain.io/core-concepts/events/).

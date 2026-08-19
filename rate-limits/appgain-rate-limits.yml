@@ -1,0 +1,73 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.appgain.io/integrations/n8n-integration/ +
+  https://docs.appgain.io/Omni-channels/WhatsApp%20Lite/gettingStarted/ +
+  https://docs.appgain.io/Marketing%20Automation/gettingStarted/ +
+  https://headwayapp.co/appgain-changelog + live header probes 2026-08-13
+limit_count: 0
+api_rate_limits_published: false
+note: >-
+  Appgain publishes NO numeric API rate limit and returns NO rate-limit response
+  headers. Its own integration guide instructs developers to "respect API rate limits
+  and implement delays" and to "implement exponential backoff" on rate limiting —
+  while never stating a limit, a window, or a status code. limit_count is 0 because
+  there is no published API limit to record. The channel-level SEND caps and
+  platform-side throttles below are real published numbers, but they are delivery
+  policy on messages, not request limits on the API, so they are kept in a separate
+  block rather than counted as rate limits.
+response_headers:
+  method: probed
+  probed: '2026-08-13'
+  rate_limit_headers: none
+  observed_on_all_api_hosts: [x-api-version, x-kong-upstream-latency, x-kong-proxy-latency, via, access-control-expose-headers]
+  retry_after: false
+  status_on_exhaustion: undocumented
+  note: >-
+    The API sits behind Kong (via: kong/0.11.2), which supports rate-limiting plugins
+    and standard headers, but none are emitted on the responses observed. An agent has
+    no runtime signal to pace itself with — no remaining count, no reset time, no
+    Retry-After.
+channel_send_limits:
+- channel: WhatsApp Lite
+  scope: per connected number, per day
+  limit: 300
+  unit: messages
+  guidance_range: 100-300 messages per day
+  source: https://headwayapp.co/appgain-changelog
+  note: >-
+    Raised to 300/day with "adaptive pacing" in the WhatsApp Lite 1.0 release. The
+    docs recommend staying at 100-300/day to avoid WhatsApp spam detection. Exceeding
+    it risks the number being blocked by WhatsApp, for which Appgain states there is
+    no refund.
+- channel: WhatsApp Lite
+  scope: platform-side throttle
+  limit: adaptive
+  unit: batching pause
+  window: 30 minutes
+  source: https://headwayapp.co/appgain-changelog
+  note: '"Compliance Guard — adaptive 30-minute batching pauses automatically if Meta spam signals rise."'
+- channel: WhatsApp Business API
+  scope: per account
+  limit: none
+  source: https://appgain.io/whatsapp
+  note: 'Appgain''s own comparison table states the Business API tier has "No Daily Limits" (Meta''s messaging tiers still apply upstream).'
+platform_throttles:
+- name: Smart Anti-Spam
+  scope: per user, per automation event, per day
+  limit: 1
+  unit: message
+  source: https://docs.appgain.io/Marketing%20Automation/gettingStarted/
+  note: >-
+    The automation engine will not send the same journey message to the same user more
+    than once in a day even if the trigger fires repeatedly, and stops the sequence if
+    the user clicks the CTA on an earlier message. This is a server-side delivery
+    guard on journeys — it does not de-duplicate direct POST /{projectId}/send calls
+    and is not an idempotency contract.
+documented_guidance:
+- {text: 'Rate Limiting: Respect API rate limits and implement delays', where: n8n integration guide, best practices}
+- {text: 'Rate Limiting: Implement exponential backoff', where: n8n integration guide, common issues}
+gaps:
+- No published request-per-second/minute/hour limit for any endpoint.
+- No 429 handling documented; no Retry-After.
+- No per-key or per-project quota published.
