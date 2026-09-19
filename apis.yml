@@ -136,6 +136,10 @@ apis:
   baseURL: https://automator.appgain.io
   tags:
   - Marketing Automation
+  - Customer Journey
+  - Event Triggers
+  tags_raw:
+  - Marketing Automation
   - Customer Journeys
   - Event Triggers
   properties:
