@@ -64,6 +64,121 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Appgain is a company surfaced as a portfolio company of 500-global and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Appgain is an omnichannel messaging and mobile marketing automation platform, originally out of the MENA region, that lets marketers acquire, engage, and retain mobile and web users across push notifications, in-app messaging, email, SMS, WhatsApp, and web push from a single cloud. Its REST API and mobile SDKs power smart deep links, micro landing pages, behavior-triggered automation journeys, a customer data platform (CDP) with real-time event logging and purchase tracking, and multi-channel campaign delivery, with marketplace apps for Shopify, Zid, and Salla and no-code integrations via Zapier and n8n. The backend is built on the open-source Parse Server stack, and first-party SDKs cover Android, iOS, Flutter, React Native, Cordova/Ionic, and web. Since 2026 the company positions itself as an "AI Workforce Platform" for MENA businesses, adding AI agent products - a RAG-powered customer bot, AI call intelligence with Arabic and English transcription, a visual bot builder, and a unified inbox - on top of the messaging core. The only machine-readable contract Appgain publishes is a public Postman collection served from its own apidocs subdomain; there is no OpenAPI.
 
-Backed by: 500-global — https://appgain.io
+**Areas:** Company · Mobile Marketing · Marketing Automation · Omnichannel Messaging · Push Notifications · SMS · Email · WhatsApp · Customer Data Platform · Deep Linking · Customer Engagement · AI Agents
+
+## Appgain on APIs.io
+
+Everything profiled for Appgain is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/appgain/](https://apis.io/providers/appgain/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Appgain OmniChannel Messaging API](https://apis.io/apis/appgain/appgain-omnichannel-messaging-api/) — REST API for sending multi-channel campaigns (rich push notifications, email, SMS, web push), creating smart deep links, managing a media library, and…
+- [Appgain Notify API](https://apis.io/apis/appgain/appgain-notify-api/) — The messaging send service. A single POST /{projectId}/send endpoint whose channel is selected by the top-level body key (appPush, email, SMS, webPush,…
+- [Appgain Automator API](https://apis.io/apis/appgain/appgain-automator-api/) — The marketing-automation service. Fires and cancels dashboard-configured automation journeys at a named trigger point, for one user or a batch of users via…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Appgain Webhooks](https://apis.io/asyncapis/appgain/appgain-webhooks/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [Appgain.io](https://apis.io/collections/appgain/postman-appgain-omnichannel/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Appgain Authentication](https://apis.io/security/appgain/appgain-authentication/)
+- [Appgain Domain Security](https://apis.io/security/appgain/appgain-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Appgain Plans Pricing](https://apis.io/plans/appgain/appgain-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Appgain Rate Limits](https://apis.io/rate-limits/appgain/appgain-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://appgain.io)
+- [Documentation](https://docs.appgain.io/complete-knowledge-base/)
+- [Getting started](https://docs.appgain.io/SDK/gettingStarted/)
+- [API reference](https://apidocs.appgain.io)
+- [Pricing](https://www.appgain.io/pricing)
+- [Sign up](https://dashboard.appgain.io)
+- [Support](https://p.appgain.io/slack)
+- [Changelog](https://headwayapp.co/appgain-changelog)
+- [Blog](https://www.appgain.io/blog)
+- [Terms of service](https://appgain.io/tos)
+- [Privacy policy](https://www.appgain.io/privacy)
+- [GitHub](https://github.com/appgain)
+
+## API Evangelist rating
+
+**Kin Score 36.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 39.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 75.6 |
+| Access clarity | 0.0 |
+
+**Agent readiness 29.0** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 20.0** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/appgain/](https://apis.io/providers/appgain/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Appgain: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/appgain/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
